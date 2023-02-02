@@ -17,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import command.CommandAction; //인터페이스
 
-//컨트롤러 = 서블릿
 public class ControllerDispatcher extends HttpServlet{
-	//변수
 	private Map map=new HashMap(); 
 	
 	//init() : 초기화 작업
@@ -31,7 +29,6 @@ public class ControllerDispatcher extends HttpServlet{
 		String pros=path+config.getInitParameter("proFile");
 		Properties pp=new Properties();
 		FileInputStream ff=null;
-		
 		try{
 			ff=new FileInputStream(pros);
 			pp.load(ff);
@@ -44,9 +41,8 @@ public class ControllerDispatcher extends HttpServlet{
 				}
 			}catch(Exception ex2){}
 		}//finally()_end
-		
+
 		Iterator keyIter=pp.keySet().iterator();
-		
 		while(keyIter.hasNext()){
 			String key=(String)keyIter.next(); //board/writeForm.do
 			String className=pp.getProperty(key); //action.board.WriteFormAction
@@ -85,10 +81,10 @@ public class ControllerDispatcher extends HttpServlet{
 		try{
 			String uri=request.getRequestURI();
 			if(uri.indexOf(request.getContextPath())==0){
-				uri=uri.substring(request.getContextPath().length()); //board/writeForm.do
+				uri=uri.substring(request.getContextPath().length());
 			}//if()-end
 			commandAction=(CommandAction)map.get(uri);
-			view=commandAction.requestPro(request, response); // "/board/writeForm.jsp"
+			view=commandAction.requestPro(request, response);
 			
 		}catch(Throwable ex){
 			throw new ServletException(ex);

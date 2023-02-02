@@ -19,7 +19,7 @@ public class OracleTest
             // 그 결과를 담을 ResulSet 객체를 준비한 후 실행시킨다.
             String quary = "SELECT * FROM corse where name = '가오리코스' order by id";
             
-            conn = DBConnection.getInstacne().getConnection();
+            conn = DBConnection.getInstance().getConnection();
             pstm = conn.prepareStatement(quary);
             rs = pstm.executeQuery();
             

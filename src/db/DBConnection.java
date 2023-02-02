@@ -9,7 +9,7 @@ public class DBConnection{
 	private static DBConnection orclDbc;
 	private DBConnection() {}
     
-    public static DBConnection getInstacne(){
+    public static DBConnection getInstance(){
     	if(orclDbc==null) {
     		orclDbc = new DBConnection();
     	}
