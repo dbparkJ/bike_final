@@ -19,11 +19,11 @@ public class DBConnection{
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Connection con = null;
         try {
-            String user = "bike"; 
-            String pw = "12345";
-            String url = "jdbc:oracle:thin:@192.168.0.78/xe";
+        	Class.forName("oracle.jdbc.driver.OracleDriver");        
+            String user = "admin"; 
+            String pw = "Qlalfqjsgh12wkfl";
+            String url = "jdbc:oracle:thin:@FinalProject_medium?TNS_ADMIN=D:/wallet";
             
-            Class.forName("oracle.jdbc.driver.OracleDriver");        
             con = DriverManager.getConnection(url, user, pw);
             
             System.out.println("Database에 연결되었습니다.\n");
