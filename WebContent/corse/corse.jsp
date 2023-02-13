@@ -6,41 +6,61 @@
 	<head>
 		<meta charset="UTF-8">
 	</head>
-	<body class="mx-5 py-5">
-	
-		<div class="container-md py-5">
-			<div class="border bg-light py-4" style="width: 80%; height: 110%;">
-				<div class="btn-group ms-4">
-					<div class="py-2 text-white">
-						<button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
-							코스
-						</button>
-						<ul class="dropdown-menu dropdown-menu-light">
-							<li><a class="dropdown-item">서울근교</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<c:forEach var="singleCorse" items="${singleCorseList}">
-									<div class="d-grid gap-2">
-										<button class="btn btn-outline-white" keyword = "${singleCorse.name}" onclick="PaintingLine(this.getAttribute('keyword'))">${singleCorse.name}</button>
-									</div>	
-								</c:forEach>
-							</li>
-						</ul>
+	<body>
+		<div class="ms-5 py-auto">
+			<div class="row gx-5" style="width: 100%; height: 100%;">
+				<div class="col">
+					<div class="p-1 border bg-light" style="width: 100%; height: 100%;">
+						<div class="btn-group ms-3">
+							<div class="py-2 text-white">
+								<button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
+										코스 선택
+								</button>
+								<ul class="dropdown-menu dropdown-menu-light">
+									<li><a class="dropdown-item">서울근교</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<c:forEach var="singleCorse" items="${singleCorseList}">
+											<div class="d-grid gap-2">
+												<button class="btn btn-outline-white" keyword = "${singleCorse.name}" onclick="PaintingLine(this.getAttribute('keyword'))">${singleCorse.name}</button>
+											</div>	
+										</c:forEach>
+									</li>
+								</ul>
+							</div>
+							<div class="py-2 ms-3 text-white">
+								<button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
+										주변 정보
+								</button>
+								<ul class="dropdown-menu dropdown-menu-light">
+									<li>
+										<div class="d-grid gap-2">
+											<button class="btn btn-outline-white" onclick="">네이버 맛집</button>
+											<button class="btn btn-outline-white" onclick="">카카오 맛집</button>
+											<button class="btn btn-outline-white" onclick="">수리점</button>
+											<button class="btn btn-outline-white" onclick="">화장실</button>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="py-2 ">
+								<button class="btn btn-danger" onclick="RentBikeRecentInfoList()"> 따릉이 정류소</button>
+							</div>
+						</div>
+						<div class="mx-3 pb-3">
+							<div class="border"id="map" style="width:100%;height:60%;"></div>
+						</div>
+						<div class="container-md ms-5">
+							<div class="border pt-2 mx-4" style="width:77%;height:33%">
+								<canvas id="myChart"></canvas>
+							</div>
+						</div>
 					</div>
-					<div class="py-2">
-						<button class="btn btn-danger" onclick="RentBikeRecentInfoList()"> 따릉이지도</button>
-					</div>
-
-					<div class="ms-3 py-2">
-						<button class="btn btn-danger" onclick="matzipList(latlon_AVG)"> 주변 맛집</button>
-					</div>
-
 				</div>
-				<div class="mx-4 pb-3">
-	      			<div class="border"id="map" style="width:100%;height:50%;"></div>
-				</div>
-				<div class="border pt-2 mx-4" style="width:95%;height:40%">
-				    <canvas id="myChart"></canvas>
+				<div class="col">
+					<div class="p-1 border bg-light" style="width: 100%; height: 100%;">
+						
+					</div>
 				</div>
 			</div>
 		</div>

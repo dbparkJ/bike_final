@@ -11,7 +11,7 @@
 				<jsp:include page="/module/top.jsp" flush="false"/>
 				<!-- 메인이미지 -->	
 				<jsp:include page="${CONTENT}" flush="false"/>
-				<jsp:include page="/module/bottom.jsp" flush="false"/>
+				
 			</div>	
 		</div>
 	</body>

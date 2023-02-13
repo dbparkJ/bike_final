@@ -108,7 +108,7 @@ public class MapDAO {
 				pstmt = con.prepareStatement("SELECT  MAX(LON) LON_MAX, MAX(LAT) LAT_MAX,\r\n"
 						+ "        MIN(LON) LON_MIN, MIN(LAT) LAT_MIN,\r\n"
 						+ "        AVG(LON) LON_AVG, AVG(LAT) LAT_AVG\r\n"
-						+ "  FROM CORSE\r\n"
+						+ "  FROM corse\r\n"
 						+ "WHERE name =? GROUP BY name");
 				pstmt.setString(1, name);
 				rs=pstmt.executeQuery();

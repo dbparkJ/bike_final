@@ -33,4 +33,5 @@
 	</button>
 </div>
 </body>
+<jsp:include page="/module/bottom.jsp" flush="false"/>
 </html>

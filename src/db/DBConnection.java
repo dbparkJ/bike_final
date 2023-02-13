@@ -21,8 +21,8 @@ public class DBConnection{
         try {
         	Class.forName("oracle.jdbc.driver.OracleDriver");        
             String user = "admin"; 
-            String pw = "Qlalfqjsgh12wkfl";
-            String url = "jdbc:oracle:thin:@FinalProject_medium?TNS_ADMIN=D:/wallet";
+            String pw = "Ejwhgdmsvmfhwprxm1";
+            String url = "jdbc:oracle:thin:@FinalProject_medium?TNS_ADMIN=D:/Wallet_FinalProject";
             
             con = DriverManager.getConnection(url, user, pw);
             
