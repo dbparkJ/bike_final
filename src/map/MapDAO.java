@@ -136,4 +136,95 @@ public class MapDAO {
 			return array;
 		}//CorseMaxMinLatLon-end
 //----------------------------------------------------------------------------------------------------------------
+		/*
+		 * 날씨 불러오는 로직
+		 */
+		
+		// 강수확률 불러오는 리스트
+		public List<WeatherRainDTO> getRainList(){
+			List<WeatherRainDTO> rainList = null;
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from weather_rain where id = (select max(id) from weather_rain)");
+				rs=pstmt.executeQuery();
+				if(rs.next()){
+					rainList=new ArrayList<WeatherRainDTO>();
+					do{	
+						WeatherRainDTO dto=new WeatherRainDTO();
+						dto.setRain_1_am(rs.getInt("rain_1_am"));
+						dto.setRain_2_am(rs.getInt("rain_2_am"));
+						dto.setRain_3_am(rs.getInt("rain_3_am"));
+						dto.setRain_4_am(rs.getInt("rain_4_am"));
+						dto.setRain_5_am(rs.getInt("rain_5_am"));
+						dto.setRain_1_pm(rs.getInt("rain_1_pm"));
+						dto.setRain_2_pm(rs.getInt("rain_2_pm"));
+						dto.setRain_3_pm(rs.getInt("rain_3_pm"));
+						dto.setRain_4_pm(rs.getInt("rain_4_pm"));
+						dto.setRain_5_pm(rs.getInt("rain_5_pm"));
+						dto.setCondition_1_am(rs.getString("condition_1_am"));
+						dto.setCondition_2_am(rs.getString("condition_2_am"));
+						dto.setCondition_3_am(rs.getString("condition_3_am"));
+						dto.setCondition_4_am(rs.getString("condition_4_am"));
+						dto.setCondition_5_am(rs.getString("condition_5_am"));
+						dto.setCondition_1_pm(rs.getString("condition_1_pm"));
+						dto.setCondition_2_pm(rs.getString("condition_2_pm"));
+						dto.setCondition_3_pm(rs.getString("condition_3_pm"));
+						dto.setCondition_4_pm(rs.getString("condition_4_pm"));
+						dto.setCondition_5_pm(rs.getString("condition_5_pm"));
+						dto.setUpdateTime(rs.getDate("updateTime").toLocalDate());
+						rainList.add(dto); //***
+					}while(rs.next());
+				}//if-end
+			}catch(Exception ex) {
+				System.out.println("getRainList()예외:"+ex);
+				ex.printStackTrace();
+			}finally{
+				try{
+					if(rs!=null){rs.close();}
+					if(stmt!=null){stmt.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}//finally
+			return rainList;
+		}//getRainList-end
+		
+		// 강수확률 불러오는 리스트
+				public List<WeatherTempDTO> getTempList(){
+					List<WeatherTempDTO> tempList = null;
+					try {
+						con = DBConnection.getInstance().getConnection();
+						pstmt = con.prepareStatement("select * from weather_temp where id = (select max(id) from weather_temp)");
+						rs=pstmt.executeQuery();
+						if(rs.next()){
+							tempList=new ArrayList<WeatherTempDTO>();
+							do{	
+								WeatherTempDTO dto=new WeatherTempDTO();
+								dto.setLtemp_1(rs.getInt("Ltemp_1"));
+								dto.setLtemp_2(rs.getInt("Ltemp_2"));
+								dto.setLtemp_3(rs.getInt("Ltemp_3"));
+								dto.setLtemp_4(rs.getInt("Ltemp_4"));
+								dto.setLtemp_5(rs.getInt("Ltemp_5"));
+								dto.setHtemp_1(rs.getInt("Htemp_1"));
+								dto.setHtemp_2(rs.getInt("Htemp_2"));
+								dto.setHtemp_3(rs.getInt("Htemp_3"));
+								dto.setHtemp_4(rs.getInt("Htemp_4"));
+								dto.setHtemp_5(rs.getInt("Htemp_5"));
+								dto.setUpdateTime(rs.getDate("updateTime").toLocalDate());
+								tempList.add(dto); //***
+							}while(rs.next());
+						}//if-end
+					}catch(Exception ex) {
+						System.out.println("getTempList()예외:"+ex);
+						ex.printStackTrace();
+					}finally{
+						try{
+							if(rs!=null){rs.close();}
+							if(stmt!=null){stmt.close();}
+							if(pstmt!=null){pstmt.close();}
+							if(con!=null){con.close();}
+						} catch (Exception exx) {}
+					}//finally
+					return tempList;
+				}//getRainList-end
 }//class-end
