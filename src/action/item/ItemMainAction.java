@@ -13,37 +13,53 @@ public class ItemMainAction implements CommandAction {
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-				//리스트생성
-				List<ItemDTO> itemlist = null; 
-				//itemDAO를 사용하려고 변수에 저장
-				ItemDAO itemDAO = ItemDAO.getDao();
-				
-				itemlist = itemDAO.newitem();
-				
-//				// 페이징처리
-//				String pageNum=request.getParameter("pageNum");
-//				if(pageNum == null){  //만약 페이지넘버가 없다면
-//					pageNum="1";	 //페이지 넘버는 1
-//				}//if-end
-//				int currentPage=Integer.parseInt(pageNum);  //현재페이지는 정수로 변환한 페이지 넘버
-//				int pageSize=10;  //페이지사이즈 10
-//				int startRow=(currentPage-1)*pageSize+1;  //페이지의 시작행 구하기 (1~11, 12~21)
-//				int start=startRow-1;
-//				int endRow=currentPage*pageSize;  //마지막행은 페이지크기*현재페이지
-//				int count=0;  //카운트인수 초기화
-//				int pageBlock=10;  //블럭당 페이지는 10
-//				
-//				if(count>0){  //상품이 있으면
-//					itemlist = itemDAO.newitem(); //dao의 getPList메서드로 리스트 채우기
-//				}else{  //상품이 없으면
-//					itemlist=Collections.emptyList();  //리스트는 빈 리스트
-//				}//else-end
-//
-//				int pageCount=count/pageSize+(count%pageSize==0?0:1); 
-//				int startPage=(int)(currentPage/pageBlock)*10+1;  // (현재페이지/블럭당페이지(12))*10+1 결과값이 시작페이지
-//				int endPage=startPage+pageBlock-1;  // 시작페이지+블럭당 페이지-1 결과값은 마지막페이지
-				
-				request.setAttribute("itemlist",itemlist);
+		String pageNum=request.getParameter("pageNum");
+		
+		if(pageNum==null){
+			pageNum="1";
+		}
+		
+		int currentPage=Integer.parseInt(pageNum);
+		int pageSize=10;
+		
+		int startRow=(currentPage-1)*pageSize+1; // 페이지의 시작 행을 구한다 
+		int endRow=currentPage*pageSize; // 페이지의 끝행
+		
+		int count=0;
+		int pageBlock=10;
+		List<ItemDTO> itemlist = null;
+		
+		ItemDAO itemDAO=ItemDAO.getDao();
+		count=itemDAO.getCount();
+		System.out.println(count);
+		if(count>0){ // 글이있으면...
+			itemlist=itemDAO.newitem(startRow,endRow); // 1~ 10 , 11~ 20
+			
+		}else{ // 글이없으면...
+			itemlist=Collections.EMPTY_LIST;
+			
+		} // else-end
+		
+		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+		
+		int startPage=(int)(currentPage/pageBlock)*10+1;
+		int endPage=startPage+pageBlock-1;
+		
+		// jsp에서 사용 할 속성설정
+		request.setAttribute("startPage",new Integer(startPage));
+		request.setAttribute("endPage",new Integer(endPage));
+		request.setAttribute("currentPage",new Integer(currentPage));
+		
+		request.setAttribute("startRow",new Integer(startRow));
+		request.setAttribute("endRow",new Integer(endRow));
+		
+		request.setAttribute("pageBlock",new Integer(pageBlock));
+		request.setAttribute("pageCount",new Integer(pageCount));
+		
+		request.setAttribute("count",new Integer(count));
+		request.setAttribute("pageSize",new Integer(pageSize));
+		
+		request.setAttribute("itemlist",itemlist);
 		return "/item/itemMain.jsp";
 	}
 
