@@ -1,6 +1,6 @@
-package map;
+package map.storeDTO;
 
-public class NaverStoreReviewDTO {
+public class NaverStoreReview {
 	private Integer store_id;
 	private String naver_nickname;
 	private String naver_date;

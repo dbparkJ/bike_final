@@ -21,16 +21,24 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
             <li><a class="dropdown-item" href="${ctxpath}/corse/corse.do">추천코스</a></li>
-            <li><a class="dropdown-item" href="${ctxpath}/weather/weatherInfo.do">주간 날씨예보</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mx-3" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            자전거 구매
+            자전거 구매하러가기
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
             <li><a class="dropdown-item" href="${ctxpath}/goods/newgoods.do">상품</a></li>
             <li><a class="dropdown-item" href="${ctxpath}/goods/usedgoods.do">중고상품</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle mx-3" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            퓨처랩
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><a class="dropdown-item" href="">따릉이 수요예측</a></li>
+            <li><a class="dropdown-item" href="">중고상품</a></li>
           </ul>
         </li>
       </ul>

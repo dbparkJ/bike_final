@@ -18,11 +18,14 @@ var imageSize = new kakao.maps.Size(24, 35); // 마커 이미지의 이미지 �
 var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
 
+var naverStoreMarkers =[];
+
 /*마커 이미지주소*/
 
 function PaintingLine(keyword){
 	if(latlon_AVG!=null){
 		latlon_AVG=[];
+		deletematzipmarkers()
 	}
 		$.ajax({
 		type : "GET",
@@ -67,7 +70,7 @@ function drawingLine(data){
 	}
 	polyline = 	new kakao.maps.Polyline({
 				    path: path, // 선을 구성하는 좌표배열 입니다
-				    strokeWeight: 3, // 선의 두께 입니다
+				    strokeWeight: 5, // 선의 두께 입니다
 				    strokeColor: 'red', // 선의 색깔입니다
 				    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
 				    strokeStyle: 'dashdot', // 선의 스타일입니다
@@ -151,4 +154,42 @@ function removegraph(elevList){
 	if(elevList != null){
 		elevList =[];
 			}
+}
+
+/*-----------------------------------------------------------------------------------------------------------*/
+function deletematzipmarkers(){
+	 for (var i = 0; i < naverStoreMarkers.length; i++) {
+	    	naverStoreMarkers[i].setMap(null);
+    	}
+	naverStoreMarkers=[];
+    
+}
+
+function drwaingMatzipMarker(data){
+	for(var i=0; i<data.length; i++){
+		var	marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: new kakao.maps.LatLng(data[i].lat,data[i].lon), // 마커를 표시할 위치
+	    	});
+		
+	        /*kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker));*/
+    		/*kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow)); */
+    		naverStoreMarkers.push(marker);
+	}
+}
+
+function naverStoreList(latlon_AVG){
+	if(naverStoreMarkers.length > 0) {
+		deletematzipmarkers()
+	}else {
+		$.ajax({
+				type : "GET",
+				url : "../json/naverStoreList.jsp?&minlon="+latlon_AVG[2]+"&maxlon="+latlon_AVG[3]+"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
+				dataType : "JSON",
+				success : function(data){
+					drwaingMatzipMarker(data)
+					console.log(data)
+				}
+		})
+	}
 }

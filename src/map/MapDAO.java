@@ -1,5 +1,5 @@
 /*
- * 코스 관련 로직
+ * 맵 관련 로직
  */
 package map;
 
@@ -14,6 +14,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import db.DBConnection;
+import map.corseDTO.CorseList;
+import map.corseDTO.CorseMaxMinLatLon;
+import map.storeDTO.NaverStore;
+import weatherDTO.WeatherRain;
+import weatherDTO.WeatherTemp;
 
 public class MapDAO {
 		
@@ -38,16 +43,16 @@ public class MapDAO {
 		/*
 		 * 코스이름을 가져와서 list로 반환해주는 로직
 		 */
-		public List<CorseListDTO> getCorseList(){
-			List<CorseListDTO> singleCorseList = null;
+		public List<CorseList> getCorseList(){
+			List<CorseList> singleCorseList = null;
 			try {
 				con = DBConnection.getInstance().getConnection();
 				pstmt = con.prepareStatement("select name from corse group by name");
 				rs=pstmt.executeQuery();
 				if(rs.next()){
-					singleCorseList=new ArrayList<CorseListDTO>();
+					singleCorseList=new ArrayList<CorseList>();
 					do{	
-						CorseListDTO dto=new CorseListDTO();
+						CorseList dto=new CorseList();
 						dto.setName(rs.getString("name"));
 						singleCorseList.add(dto); //***
 					}while(rs.next());
@@ -68,7 +73,7 @@ public class MapDAO {
 		/*
 		 * 웹에서 선택한 코스 이름을 인자로 코스 1개를 가져온다
 		 */
-		public List<CorseListDTO> getCorseLatLon(String name){
+		public List<CorseList> getCorseLatLon(String name){
 			JSONArray array = new JSONArray();
 			try {
 				con = DBConnection.getInstance().getConnection();
@@ -101,7 +106,7 @@ public class MapDAO {
 		 * 코스를 사각형으로 생각해 코스의 남서쪽 좌표와 중앙값, 북동쪽 좌표를 코스이름으로 가져오는 로직
 		 * 코스를 바꿀때 지도에 한눈에 보여주기 위해 사용된다.
 		 */
-		public List<CorseMaxMinLatLonDTO> getCorseMaxMinLatLon(String name){
+		public List<CorseMaxMinLatLon> getCorseMaxMinLatLon(String name){
 			JSONArray array = new JSONArray();
 			try {
 				con = DBConnection.getInstance().getConnection();
@@ -141,16 +146,16 @@ public class MapDAO {
 		 */
 		
 		// 강수확률 불러오는 리스트
-		public List<WeatherRainDTO> getRainList(){
-			List<WeatherRainDTO> rainList = null;
+		public List<WeatherRain> getRainList(){
+			List<WeatherRain> rainList = null;
 			try {
 				con = DBConnection.getInstance().getConnection();
 				pstmt = con.prepareStatement("select * from weather_rain where id = (select max(id) from weather_rain)");
 				rs=pstmt.executeQuery();
 				if(rs.next()){
-					rainList=new ArrayList<WeatherRainDTO>();
+					rainList=new ArrayList<WeatherRain>();
 					do{	
-						WeatherRainDTO dto=new WeatherRainDTO();
+						WeatherRain dto=new WeatherRain();
 						dto.setRain_1_am(rs.getInt("rain_1_am"));
 						dto.setRain_2_am(rs.getInt("rain_2_am"));
 						dto.setRain_3_am(rs.getInt("rain_3_am"));
@@ -190,16 +195,16 @@ public class MapDAO {
 		}//getRainList-end
 		
 		// 강수확률 불러오는 리스트
-				public List<WeatherTempDTO> getTempList(){
-					List<WeatherTempDTO> tempList = null;
+				public List<WeatherTemp> getTempList(){
+					List<WeatherTemp> tempList = null;
 					try {
 						con = DBConnection.getInstance().getConnection();
 						pstmt = con.prepareStatement("select * from weather_temp where id = (select max(id) from weather_temp)");
 						rs=pstmt.executeQuery();
 						if(rs.next()){
-							tempList=new ArrayList<WeatherTempDTO>();
+							tempList=new ArrayList<WeatherTemp>();
 							do{	
-								WeatherTempDTO dto=new WeatherTempDTO();
+								WeatherTemp dto=new WeatherTemp();
 								dto.setLtemp_1(rs.getInt("Ltemp_1"));
 								dto.setLtemp_2(rs.getInt("Ltemp_2"));
 								dto.setLtemp_3(rs.getInt("Ltemp_3"));
@@ -227,4 +232,46 @@ public class MapDAO {
 					}//finally
 					return tempList;
 				}//getRainList-end
+//----------------------------------------------------------------------------------------------------------------
+		public List<NaverStore> getNaverStoreList(Double minlon,Double maxlon,Double minlat,Double maxlat){
+			JSONArray naverStoreList = new JSONArray();
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from naver_store "
+						+ "where lon>? and lon<? "
+						+ "and lat>? and lat<? "
+						+ "and rownum<=50");
+				pstmt.setDouble(1, minlon);
+				pstmt.setDouble(2, maxlon);
+				pstmt.setDouble(3, minlat);
+				pstmt.setDouble(4, maxlat);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					JSONObject obj = new JSONObject();
+					obj.put("store_id", rs.getInt("store_id"));
+					obj.put("store_name", rs.getString("store_name"));
+					obj.put("addr", rs.getString("addr"));
+					obj.put("lat", rs.getDouble("lat"));
+					obj.put("lon", rs.getDouble("lon"));
+					obj.put("naver_star_avg", rs.getInt("naver_star_avg"));
+					obj.put("naver_review_num", rs.getString("naver_review_num"));
+					obj.put("naver_url", rs.getString("naver_url"));
+					obj.put("cate_b", rs.getString("cate_b"));
+					obj.put("cate_c", rs.getString("cate_c"));
+					
+					naverStoreList.add(obj);
+				}
+			}catch(Exception ex){
+				System.out.println("getNaverStoreList()예외:"+ex);
+			}finally{
+				try{
+					if(stmt!=null){stmt.close();}
+					if(rs!=null){rs.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}
+			return naverStoreList;
+		}
 }//class-end

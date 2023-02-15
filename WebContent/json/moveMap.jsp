@@ -1,3 +1,4 @@
+<%@page import="map.corseDTO.CorseMaxMinLatLon"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="map.*"
@@ -8,7 +9,7 @@
 
 <%
 String mapName = request.getParameter("keyword");
-List<CorseMaxMinLatLonDTO> corseMaxMinList = null;
+List<CorseMaxMinLatLon> corseMaxMinList = null;
 MapDAO dao = MapDAO.getDao();
 corseMaxMinList = dao.getCorseMaxMinLatLon(mapName);
 %>

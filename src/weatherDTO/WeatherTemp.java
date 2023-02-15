@@ -1,8 +1,8 @@
-package map;
+package weatherDTO;
 
 import java.time.LocalDate;
 
-public class WeatherTempDTO {
+public class WeatherTemp {
 	private Integer id;
 	private String name;
 	private Integer Ltemp_1;

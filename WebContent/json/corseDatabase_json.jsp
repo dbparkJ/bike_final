@@ -1,3 +1,4 @@
+<%@page import="map.corseDTO.CorseList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="map.*"
@@ -8,7 +9,7 @@
 
 <%
 String name = request.getParameter("keyword");
-List<CorseListDTO> corseList = null;
+List<CorseList> corseList = null;
 MapDAO dao = MapDAO.getDao();
 corseList = dao.getCorseLatLon(name);
 %>

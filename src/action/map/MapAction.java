@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import map.MapDAO;
+import map.corseDTO.CorseList;
+import weatherDTO.WeatherRain;
+import weatherDTO.WeatherTemp;
 import map.*;
 import command.CommandAction;
 
@@ -18,9 +21,9 @@ public class MapAction implements CommandAction{
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		List<CorseListDTO> CorseList = null;
-		List<WeatherRainDTO> RainList = null;
-		List<WeatherTempDTO> TempList = null;
+		List<CorseList> CorseList = null;
+		List<WeatherRain> RainList = null;
+		List<WeatherTemp> TempList = null;
 		
 		MapDAO mapDAO = MapDAO.getDao(); 
 		

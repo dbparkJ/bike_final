@@ -1,10 +1,10 @@
-package map;
+package map.corseDTO;
 
 /*
  * 코스 리스트 DTO
  */
 
-public class CorseListDTO {
+public class CorseList {
 	private Integer id;
 	private String name;
 	private Double lat; // 위도

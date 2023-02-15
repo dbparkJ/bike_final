@@ -1,6 +1,6 @@
-package map;
+package map.corseDTO;
 
-public class CorseMaxMinLatLonDTO {
+public class CorseMaxMinLatLon {
 	private Double lon_max;
 	private Double lon_min;
 	private Double lon_avg;

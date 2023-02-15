@@ -1,8 +1,8 @@
-package map;
+package map.corseDTO;
 /*
  * 자전거 수리점 DTO
  */
-public class RepairShopDTO {
+public class RepairShop {
 	private Integer id;
 	private String name;
 	private String addr;

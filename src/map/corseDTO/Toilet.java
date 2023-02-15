@@ -1,10 +1,10 @@
-package map;
+package map.corseDTO;
 
 /*
  * 화장실 DTO
  */
 
-public class ToiletDTO {
+public class Toilet {
 	private Integer id;
 	private String name;
 	private Double lat; // 위도
