@@ -17,8 +17,9 @@ var title =[]; /*마커의 이름*/
 var imageSize = new kakao.maps.Size(24, 35); // 마커 이미지의 이미지 크기 입니다
 var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
-var singlecorsename =''
+var singlecorsename ='';
 var naverStoreMarkers =[];
+var infowindow = null;
 
 /*마커 이미지주소*/
 
@@ -167,11 +168,40 @@ function deletematzipmarkers(){
     
 }
 
-function drwaingMatzipMarker(data){
+function drwaingNaverMarker(data){
+	makeOutListener(infowindow)
+	for(var i=0; i<data.length; i++){
+		var	marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: new kakao.maps.LatLng(data[i].lat,data[i].lon) // 마커를 표시할 위치
+	    	});
+	    var infowindow = new kakao.maps.InfoWindow({
+        	content: '<div class="py-2 mx-2">'+
+        	'<p>'+data[i].store_name+'</p>'+
+        	'<p>식당분류 : '+data[i].cate_c+'</p>'+
+        	'<p>주소 : '+data[i].addr+'</p>'+
+        	'<p>별점 : '+data[i].naver_star_avg+'</p>'+
+        	'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">'+
+        	'Launch demo modal'+
+        	'</button>'+
+        	'</div>'
+        	
+        	
+	        });
+		
+	        kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+    		kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
+    		naverStoreMarkers.push(marker);
+	}
+}
+
+function drwaingKakaoMarker(data){
+	makeOutListener(infowindow)
 	for(var i=0; i<data.length; i++){
 		var	marker = new kakao.maps.Marker({
 	        map: map, // 마커를 표시할 지도
 	        position: new kakao.maps.LatLng(data[i].lat,data[i].lon), // 마커를 표시할 위치
+	        image : markerImage
 	    	});
 		
 	        /*kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker));*/
@@ -181,10 +211,11 @@ function drwaingMatzipMarker(data){
 }
 
 function naverStoreList(singlecorsename,latlon_AVG){
-	console.log('진입',singlecorsename)
-	if(naverStoreMarkers.length > 0) {
-		deletematzipmarkers()
-	}else {
+	deletematzipmarkers()
+	console.log('네이버'+infowindow);
+	if(infowindow != null){
+		infowindow.close();
+	}else{
 		$.ajax({
 				type : "GET",
 				url : "../json/naverStoreList.jsp?&corseName="+singlecorsename+
@@ -192,17 +223,19 @@ function naverStoreList(singlecorsename,latlon_AVG){
 				"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
 				dataType : "JSON",
 				success : function(data){
-					drwaingMatzipMarker(data)
+					drwaingNaverMarker(data)
 				}
 		})
-	}
+	}	
+	
 }
 
 function kakaoStoreList(singlecorsename,latlon_AVG){
-	console.log('진입',singlecorsename)
-	if(naverStoreMarkers.length > 0) {
-		deletematzipmarkers()
-	}else {
+	deletematzipmarkers()
+	console.log('카카오'+infowindow);
+	if(infowindow != null){
+		infowindow.close();
+	}else{
 		$.ajax({
 				type : "GET",
 				url : "../json/kakaoStoreList.jsp?&corseName="+singlecorsename+
@@ -210,8 +243,53 @@ function kakaoStoreList(singlecorsename,latlon_AVG){
 				"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
 				dataType : "JSON",
 				success : function(data){
-					drwaingMatzipMarker(data)
+					drwaingKakaoMarker(data)
 				}
 		})
 	}
+	
 }
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+	console.log(infowindow)
+    return function() {
+        infowindow.close();
+    };
+}
+
+function requestFlask(){
+	$.ajax({
+			type : "POST",
+			url : "192.168.0.146:5000/recommandItem?item_id="+pass+"&cosine_weight="+pass
+	
+	
+	
+	})
+}
+
+$(document).ready(function() {
+  // 모달이 열릴 때 이벤트 처리
+  $('#exampleModal').on('show.bs.modal', function(event) {
+    // 데이터 입력란 초기화
+    $('#exampleModalLabel').val('hi');
+  });
+
+  // 추가 버튼 클릭 시 이벤트 처리
+  $('#add-data-btn').on('click', function() {
+    // 입력된 데이터 가져오기
+    var data = $('#input-data').val();
+
+    // TODO: 데이터 추가 처리 (예: 서버로 데이터 전송)
+
+    // 모달 닫기
+    $('#exampleModal').modal('hide');
+  });
+});
