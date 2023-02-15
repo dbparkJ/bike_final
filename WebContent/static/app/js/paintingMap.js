@@ -17,7 +17,7 @@ var title =[]; /*마커의 이름*/
 var imageSize = new kakao.maps.Size(24, 35); // 마커 이미지의 이미지 크기 입니다
 var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
-
+var singlecorsename =''
 var naverStoreMarkers =[];
 
 /*마커 이미지주소*/
@@ -26,6 +26,7 @@ function PaintingLine(keyword){
 	if(latlon_AVG!=null){
 		latlon_AVG=[];
 		deletematzipmarkers()
+		singlecorsename=''
 	}
 		$.ajax({
 		type : "GET",
@@ -38,6 +39,8 @@ function PaintingLine(keyword){
 		        	drawingLine(data);
 					polyline.setMap(map);
 					creatgraph(data,keyword);
+					singlecorsename=keyword
+					console.log(singlecorsename)
 	        		}
      	});
 }
@@ -48,7 +51,6 @@ function resetMap(keyword){
         url:"../json/moveMap.jsp?keyword="+keyword,
         dataType:"JSON",
         success: function(data){
-			console.log(data)
 			var bounds = new kakao.maps.LatLngBounds();			
 			var moveLatLon = [
 				new kakao.maps.LatLng(data[0].LAT_AVG,data[0].LON_AVG),
@@ -178,17 +180,37 @@ function drwaingMatzipMarker(data){
 	}
 }
 
-function naverStoreList(latlon_AVG){
+function naverStoreList(singlecorsename,latlon_AVG){
+	console.log('진입',singlecorsename)
 	if(naverStoreMarkers.length > 0) {
 		deletematzipmarkers()
 	}else {
 		$.ajax({
 				type : "GET",
-				url : "../json/naverStoreList.jsp?&minlon="+latlon_AVG[2]+"&maxlon="+latlon_AVG[3]+"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
+				url : "../json/naverStoreList.jsp?&corseName="+singlecorsename+
+				"&minlon="+latlon_AVG[2]+"&maxlon="+latlon_AVG[3]+
+				"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
 				dataType : "JSON",
 				success : function(data){
 					drwaingMatzipMarker(data)
-					console.log(data)
+				}
+		})
+	}
+}
+
+function kakaoStoreList(singlecorsename,latlon_AVG){
+	console.log('진입',singlecorsename)
+	if(naverStoreMarkers.length > 0) {
+		deletematzipmarkers()
+	}else {
+		$.ajax({
+				type : "GET",
+				url : "../json/kakaoStoreList.jsp?&corseName="+singlecorsename+
+				"&minlon="+latlon_AVG[2]+"&maxlon="+latlon_AVG[3]+
+				"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
+				dataType : "JSON",
+				success : function(data){
+					drwaingMatzipMarker(data)
 				}
 		})
 	}

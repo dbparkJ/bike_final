@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import db.DBConnection;
 import map.corseDTO.CorseList;
 import map.corseDTO.CorseMaxMinLatLon;
+import map.storeDTO.KakaoStore;
 import map.storeDTO.NaverStore;
 import weatherDTO.WeatherRain;
 import weatherDTO.WeatherTemp;
@@ -233,18 +234,22 @@ public class MapDAO {
 					return tempList;
 				}//getRainList-end
 //----------------------------------------------------------------------------------------------------------------
-		public List<NaverStore> getNaverStoreList(Double minlon,Double maxlon,Double minlat,Double maxlat){
+		public List<NaverStore> getNaverStoreList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
 			JSONArray naverStoreList = new JSONArray();
 			try {
 				con = DBConnection.getInstance().getConnection();
-				pstmt = con.prepareStatement("select * from naver_store "
-						+ "where lon>? and lon<? "
+				pstmt = con.prepareStatement("select * from naver_store"
+						+ " where REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
+						+ " in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
+						+ " test from corse where name=?)"
+						+ "and lon>? and lon<? "
 						+ "and lat>? and lat<? "
-						+ "and rownum<=50");
-				pstmt.setDouble(1, minlon);
-				pstmt.setDouble(2, maxlon);
-				pstmt.setDouble(3, minlat);
-				pstmt.setDouble(4, maxlat);
+						+ " and naver_star_avg >= 4 and rownum<=50");
+				pstmt.setString(1, corseName);
+				pstmt.setDouble(2, minlon);
+				pstmt.setDouble(3, maxlon);
+				pstmt.setDouble(4, minlat);
+				pstmt.setDouble(5, maxlat);
 				rs=pstmt.executeQuery();
 				
 				while(rs.next()) {
@@ -273,5 +278,51 @@ public class MapDAO {
 				} catch (Exception exx) {}
 			}
 			return naverStoreList;
+		}
+		
+		public List<KakaoStore> getKakaoStoreList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
+			JSONArray kakaoStoreList = new JSONArray();
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from kakao_store"
+						+ " where REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
+						+ " in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
+						+ " test from corse where name=?)"
+						+ "and lon>? and lon<? "
+						+ "and lat>? and lat<? "
+						+ " and kakao_star_avg >= 4 and rownum<=50");
+				pstmt.setString(1, corseName);
+				pstmt.setDouble(2, minlon);
+				pstmt.setDouble(3, maxlon);
+				pstmt.setDouble(4, minlat);
+				pstmt.setDouble(5, maxlat);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					JSONObject obj = new JSONObject();
+					obj.put("store_id", rs.getInt("store_id"));
+					obj.put("store_name", rs.getString("store_name"));
+					obj.put("addr", rs.getString("addr"));
+					obj.put("lat", rs.getDouble("lat"));
+					obj.put("lon", rs.getDouble("lon"));
+					obj.put("kakao_star_avg", rs.getInt("kakao_star_avg"));
+					obj.put("kakao_review_num", rs.getString("kakao_review_num"));
+					obj.put("kakao_url", rs.getString("kakao_url"));
+					obj.put("cate_b", rs.getString("cate_b"));
+					obj.put("cate_c", rs.getString("cate_c"));
+					
+					kakaoStoreList.add(obj);
+				}
+			}catch(Exception ex){
+				System.out.println("getKakaoStoreList()예외:"+ex);
+			}finally{
+				try{
+					if(stmt!=null){stmt.close();}
+					if(rs!=null){rs.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}
+			return kakaoStoreList;
 		}
 }//class-end

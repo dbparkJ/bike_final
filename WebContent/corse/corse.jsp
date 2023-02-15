@@ -32,8 +32,8 @@
 					<ul class="dropdown-menu dropdown-menu-light">
 						<li>
 							<div class="d-grid gap-2">
-								<button class="btn btn-outline-white" onclick="naverStoreList(latlon_AVG)">네이버 맛집</button>
-								<button class="btn btn-outline-white" onclick="">카카오 맛집</button>
+								<button class="btn btn-outline-white" onclick="naverStoreList(singlecorsename,latlon_AVG)">네이버 맛집</button>
+								<button class="btn btn-outline-white" onclick="kakaoStoreList(singlecorsename,latlon_AVG)">카카오 맛집</button>
 								<button class="btn btn-outline-white" onclick="">수리점</button>
 								<button class="btn btn-outline-white" onclick="">화장실</button>
 							</div>
