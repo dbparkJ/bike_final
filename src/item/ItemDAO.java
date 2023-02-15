@@ -26,9 +26,9 @@ public class ItemDAO {
 	ResultSet rs=null;
 	
 	/*
-	 * 새상품 리스트화
+	 * 새상품 리스트화 아아아
 	 */
-	public List<ItemDTO> newitem(int start, int cnt){
+	public List<ItemDTO> newitem(int start, int cnt){ 
 		List<ItemDTO> list = null;
 		try{
 			con = DBConnection.getInstance().getConnection();
