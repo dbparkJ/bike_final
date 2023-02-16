@@ -29,8 +29,14 @@ public class ItemDAO {
 	/*
 	 * 새상품 리스트화
 	 */
-	public List<ItemDTO> newitem(int start, int cnt, String keyword){ 
+	public List<ItemDTO> newitem(int start, int cnt, String keyword, String category){ 
 		List<ItemDTO> list = null;
+		
+		System.out.println("카테고리: "+category);
+		System.out.println("서칭키워드: "+keyword);
+		if (keyword == "삼천리") {System.out.println("검색함요");}
+		
+		if(category =="b") {System.out.println("카테고리b");}
 		try{
 			con = DBConnection.getInstance().getConnection();
 			
@@ -43,10 +49,7 @@ public class ItemDAO {
 				pstmt.setInt(2,cnt);
 			
 			//검색어가 있으면
-			}else{	 				
-//				pstmt=con.prepareStatement("select * from new_item_info where item_name like '%"+keyword+"%' "
-//						+ "order by item_avg_star desc");
-				
+			}else{
 				pstmt=con.prepareStatement("SELECT *\r\n"
 						+ "  FROM (\r\n"
 						+ " SELECT ROW_NUMBER() OVER (ORDER BY item_id) NUM\r\n"

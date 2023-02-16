@@ -9,5 +9,8 @@
 <body>
 여긴 상품 상세보기 페이지입니다.
 ${itemDTO.item_name}
+<a class="text-muted fs-6" href="">
+<img src="${itemDTO.item_img}" class="card-img border" alt="..." width="500" height="500">
+</a>
 </body>
 </html>
