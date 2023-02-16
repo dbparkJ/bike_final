@@ -16,6 +16,7 @@
 	</script>
 </head>
 <body>
+
 	<h2>${category}</h2>
 	<form id="searchForm" name="serachForm" method="get">
     <table align="center">

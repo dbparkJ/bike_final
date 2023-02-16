@@ -14,6 +14,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import db.DBConnection;
+import map.corseDTO.BikeRealTime;
 import map.corseDTO.CorseList;
 import map.corseDTO.CorseMaxMinLatLon;
 import map.corseDTO.RepairShop;
@@ -349,7 +350,7 @@ public class MapDAO {
 				
 				while(rs.next()) {
 					JSONObject obj = new JSONObject();
-					obj.put("store_name", rs.getString("name"));
+					obj.put("name", rs.getString("name"));
 					obj.put("addr", rs.getString("addr"));
 					obj.put("lat", rs.getDouble("lat"));
 					obj.put("lon", rs.getDouble("lon"));
@@ -388,7 +389,7 @@ public class MapDAO {
 				
 				while(rs.next()) {
 					JSONObject obj = new JSONObject();
-					obj.put("store_name", rs.getString("name"));
+					obj.put("name", rs.getString("name"));
 					obj.put("addr", rs.getString("addr"));
 					obj.put("lat", rs.getDouble("lat"));
 					obj.put("lon", rs.getDouble("lon"));
@@ -397,6 +398,44 @@ public class MapDAO {
 				}
 			}catch(Exception ex){
 				System.out.println("getRepairShopList()예외:"+ex);
+			}finally{
+				try{
+					if(stmt!=null){stmt.close();}
+					if(rs!=null){rs.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}
+			return repairShopList;
+		}
+		
+		public List<BikeRealTime> getBikeRealTimeList(Double minlon,Double maxlon,Double minlat,Double maxlat){
+			JSONArray repairShopList = new JSONArray();
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from(select * from bike_real_time"
+						+ " where lon>? and lon<? "
+						+ "and lat>? and lat<? order by DBMS_RANDOM.RANDOM)where rownum<=50 ");
+				//select * from (select b.station_id, a.addr, b.lat, b.lon, b.updatetime from bike_real_time b inner join bike_master a on b.station_id = a.station_id) where REGEXP_SUBSTR(addr,'[^ ]+',1,2) in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,2)test from corse where name='대흥-구로역')
+				pstmt.setDouble(1, minlon);
+				pstmt.setDouble(2, maxlon);
+				pstmt.setDouble(3, minlat);
+				pstmt.setDouble(4, maxlat);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					JSONObject obj = new JSONObject();
+					obj.put("station_id", rs.getString("station_id"));
+					obj.put("station_name", rs.getString("station_name"));
+					obj.put("racktocnt", rs.getString("racktocnt"));
+					obj.put("biketocnt", rs.getString("biketocnt"));
+					obj.put("lat", rs.getDouble("lat"));
+					obj.put("lon", rs.getDouble("lon"));
+					
+					repairShopList.add(obj);
+				}
+			}catch(Exception ex){
+				System.out.println("getBikeRealTimeList()예외:"+ex);
 			}finally{
 				try{
 					if(stmt!=null){stmt.close();}
