@@ -204,9 +204,4 @@ public class ItemDTO {
 	public void setRelease_y(Integer release_y) {
 		this.release_y = release_y;
 	}
-	
-	public void getChartData() {
-		float[] chartData= {};
-		return chartData;
-	}
 }

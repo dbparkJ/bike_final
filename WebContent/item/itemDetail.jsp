@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-여긴 상품비교창입니다.
+여긴 상품 상세보기 페이지입니다.
+${itemDTO.item_name}
 </body>
 </html>
