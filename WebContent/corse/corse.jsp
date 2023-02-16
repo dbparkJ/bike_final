@@ -7,6 +7,7 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
+		<jsp:include page="/module/modal.jsp" flush="false"/>
 		<div class="border bg-light" style="width: 100%; height: 100%;">
 			<div class="btn-group ms-5">
 				<div class="py-2 text-white">
