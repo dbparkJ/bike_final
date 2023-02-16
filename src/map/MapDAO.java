@@ -16,6 +16,8 @@ import org.json.simple.JSONObject;
 import db.DBConnection;
 import map.corseDTO.CorseList;
 import map.corseDTO.CorseMaxMinLatLon;
+import map.corseDTO.RepairShop;
+import map.corseDTO.Toilet;
 import map.storeDTO.KakaoStore;
 import map.storeDTO.NaverStore;
 import weatherDTO.WeatherRain;
@@ -238,13 +240,13 @@ public class MapDAO {
 			JSONArray naverStoreList = new JSONArray();
 			try {
 				con = DBConnection.getInstance().getConnection();
-				pstmt = con.prepareStatement("select * from naver_store"
+				pstmt = con.prepareStatement("select * from (select * from naver_store"
 						+ " where REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
 						+ " in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
 						+ " test from corse where name=?)"
 						+ "and lon>? and lon<? "
 						+ "and lat>? and lat<? "
-						+ " and naver_star_avg >= 4 and rownum<=50");
+						+ "order by DBMS_RANDOM.RANDOM) where rownum<=50");
 				pstmt.setString(1, corseName);
 				pstmt.setDouble(2, minlon);
 				pstmt.setDouble(3, maxlon);
@@ -284,13 +286,13 @@ public class MapDAO {
 			JSONArray kakaoStoreList = new JSONArray();
 			try {
 				con = DBConnection.getInstance().getConnection();
-				pstmt = con.prepareStatement("select * from kakao_store"
+				pstmt = con.prepareStatement("select * from (select * from kakao_store"
 						+ " where REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
 						+ " in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
 						+ " test from corse where name=?)"
 						+ "and lon>? and lon<? "
 						+ "and lat>? and lat<? "
-						+ " and kakao_star_avg >= 4 and rownum<=50");
+						+ "order by DBMS_RANDOM.RANDOM) where rownum<=50");
 				pstmt.setString(1, corseName);
 				pstmt.setDouble(2, minlon);
 				pstmt.setDouble(3, maxlon);
@@ -324,5 +326,85 @@ public class MapDAO {
 				} catch (Exception exx) {}
 			}
 			return kakaoStoreList;
+		}
+		
+//----------------------------------------------------------------------------------------------------------------
+		
+		public List<Toilet> getToiletList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
+			JSONArray toiletList = new JSONArray();
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from toilet"
+						+ " where REGEXP_SUBSTR(addr,'[^ ]+',1,3)"
+						+ " in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,3)"
+						+ " test from corse where name=?)"
+						+ "and lon>? and lon<? "
+						+ "and lat>? and lat<? ");
+				pstmt.setString(1, corseName);
+				pstmt.setDouble(2, minlon);
+				pstmt.setDouble(3, maxlon);
+				pstmt.setDouble(4, minlat);
+				pstmt.setDouble(5, maxlat);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					JSONObject obj = new JSONObject();
+					obj.put("store_name", rs.getString("name"));
+					obj.put("addr", rs.getString("addr"));
+					obj.put("lat", rs.getDouble("lat"));
+					obj.put("lon", rs.getDouble("lon"));
+					
+					toiletList.add(obj);
+				}
+			}catch(Exception ex){
+				System.out.println("getToiletList()예외:"+ex);
+			}finally{
+				try{
+					if(stmt!=null){stmt.close();}
+					if(rs!=null){rs.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}
+			return toiletList;
+		}
+		public List<RepairShop> getRepairShopList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
+			JSONArray repairShopList = new JSONArray();
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from repair_shop"
+						+ " where REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
+						+ " in (select DISTINCT REGEXP_SUBSTR(addr,'[^ ]+',1,2)"
+						+ " test from corse where name=?)"
+						+ "and lon>? and lon<? "
+						+ "and lat>? and lat<? "
+						+ " and rownum<=50");
+				pstmt.setString(1, corseName);
+				pstmt.setDouble(2, minlon);
+				pstmt.setDouble(3, maxlon);
+				pstmt.setDouble(4, minlat);
+				pstmt.setDouble(5, maxlat);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					JSONObject obj = new JSONObject();
+					obj.put("store_name", rs.getString("name"));
+					obj.put("addr", rs.getString("addr"));
+					obj.put("lat", rs.getDouble("lat"));
+					obj.put("lon", rs.getDouble("lon"));
+					
+					repairShopList.add(obj);
+				}
+			}catch(Exception ex){
+				System.out.println("getRepairShopList()예외:"+ex);
+			}finally{
+				try{
+					if(stmt!=null){stmt.close();}
+					if(rs!=null){rs.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}
+			return repairShopList;
 		}
 }//class-end
