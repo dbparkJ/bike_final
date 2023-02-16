@@ -7,27 +7,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<script>
+		${searchBtn}.click(function(){
+			var keyword2 = ${keyword2}.val();
+			var select = $('#serachForm option:selected').val();
+			
+		});
+	</script>
 </head>
 <body>
-	<%-- 검색어입력폼 --%>
-	<form name="searchForm">
+
+	<h2>${category}</h2>
+	<form id="searchForm" name="serachForm" method="get">
     <table align="center">
       <tr>
         <td align="right" valign="bottom">
+          <select id="category" name="category">
+			  <option value="a" selected>신상품순</option>
+			  <option value="b">높은리뷰순</option>
+			  <option value="c">낮은가격순</option>
+			  <option value="d">높은가격순</option>
+	      </select>
           <input type="text" name="keyword2" id="keyword2" size="30" placeholder="검색어를 입력하세요.">
-			  <a href="${ctxpath}/item/itemMain.do?keyword2=${keyword2}">
- 				<input type="image" src="search.png" width="40px">
+			  <a href="${ctxpath}/item/itemMain.do?keyword2=${keyword2}?category=${category}">
+ 				<input type="image" id="searchBtn" src="data_applenews_emoji_update_2017_12.png" width="50px">
 			  </a> 
-			  
-			  <select id="category" onchange="changeSelection">
-				  <option>신상품순</option>
-				  <option>리뷰순</option>
-				  <option>낮은가격순</option>
-				  <option>높은가격순</option>
-			  </select>
           </td>
         </tr>
-        
       </table>
     </form> 
 	<div class="pb-5">

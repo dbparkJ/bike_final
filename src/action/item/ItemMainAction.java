@@ -13,12 +13,16 @@ public class ItemMainAction implements CommandAction {
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		request.setCharacterEncoding("utf-8");  // 인코딩안하니깐 글씨 깨짐
+		request.setCharacterEncoding("utf-8");  // 인코딩안하니깐글씨깨짐
+		
 		String pageNum=request.getParameter("pageNum");
 		
 		String keyword=""; // 빈키워드
-		String keyword2=request.getParameter("keyword2");
+		String keyword2=request.getParameter("keyword2");			
 		
+		String category=request.getParameter("category");
+		
+		String category2 = category;
 		// pageNum이 null이면 무조건 1페이지
 		if(pageNum==null){
 			pageNum="1";
@@ -37,15 +41,15 @@ public class ItemMainAction implements CommandAction {
 		
 		ItemDAO itemDAO=ItemDAO.getDao();
 		count = itemDAO.getCount();
-		
+
 		//상품이 있으면
 		if(count>0){
 			if(keyword2 != null){
-				itemlist=itemDAO.newitem(startRow,endRow,keyword2);
-				count=itemDAO.getSearchCount(keyword2);
+					itemlist=itemDAO.newitem(startRow,endRow,keyword2,category2);
+					count=itemDAO.getSearchCount(keyword2);
 			}else{
 				//검색어를 입력하지않았다면 keyword는 그냥 빈값으로 들어간다.
-				itemlist=itemDAO.newitem(startRow,endRow,keyword);	
+				itemlist=itemDAO.newitem(startRow,endRow,keyword,category2);	
 			}
 		//상품이 없으면
 		}else{
@@ -70,9 +74,9 @@ public class ItemMainAction implements CommandAction {
 		request.setAttribute("count",new Integer(count));
 		request.setAttribute("pageSize",new Integer(pageSize));
 		
-		request.setAttribute("keyword", keyword);
 		request.setAttribute("keyword2", keyword2);
-		
+		request.setAttribute("category", category);
+
 		request.setAttribute("itemlist",itemlist);
 		return "/item/itemMain.jsp";
 	}
