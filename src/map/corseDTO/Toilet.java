@@ -9,7 +9,7 @@ public class Toilet {
 	private String name;
 	private Double lat; // 위도
 	private Double lon; // 경도
-	
+	private String addr;
 	public Integer getId() {
 		return id;
 	}
@@ -33,5 +33,11 @@ public class Toilet {
 	}
 	public void setLon(Double lon) {
 		this.lon = lon;
+	}
+	public String getAddr() {
+		return addr;
+	}
+	public void setAddr(String addr) {
+		this.addr = addr;
 	}
 }

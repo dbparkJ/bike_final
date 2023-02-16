@@ -1,5 +1,8 @@
 package item;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ItemDTO {
 	private String item_name;
 	private Integer item_id;
@@ -30,6 +33,7 @@ public class ItemDTO {
 	private String frame;
 	private String saddle;
 	private String type;
+	
 	public String getItem_name() {
 		return item_name;
 	}
@@ -204,4 +208,5 @@ public class ItemDTO {
 	public void setRelease_y(Integer release_y) {
 		this.release_y = release_y;
 	}
+
 }

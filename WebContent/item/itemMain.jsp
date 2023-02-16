@@ -44,6 +44,7 @@
 						</c:if>
 						<%-- 상품이 있을때  --%>
 						<c:if test="${count>0}">
+
 							<c:forEach var="items" items="${itemlist}">
 								<div class="col">
 									<div class="card h-100">
@@ -59,6 +60,7 @@
 										<div class="card-footer text-end">
 											<a class="text-muted fs-6" href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}">상세보기</a>
 										</div>
+
 									</div>
 								</div>
 							</c:forEach>
