@@ -85,7 +85,7 @@ public class ItemDAO {
 	 */
 //-------------------------------------------------------------------------------------------
 	/*
-	 * 비교할 아이템 정보 가져옴
+	 * 아이템 정보 가져옴
 	 */
 	
 	//아이템 정보 가져오는 리스트(아이템 상세보기/비교할 아이템 가져올 때 사용)
@@ -100,63 +100,63 @@ public class ItemDAO {
 			 
 			 while(rs.next()){
 				 
-				 dto.setItem_id(rs.getInt("item_id"));
+				 dto.setItem_id(rs.getInt("ITEM_ID"));
 				 
-				 dto.setItem_name(rs.getString("item_name"));
+				 dto.setItem_name(rs.getString("ITEM_NAME"));
 				 
-				 dto.setItem_img(rs.getString("item_img"));
+				 dto.setItem_img(rs.getString("ITEM_IMG"));
 				 
-				 dto.setItem_price(rs.getInt("item_price"));
+				 dto.setItem_price(rs.getInt("ITEM_PRICE"));
 				 
-				 dto.setItem_avg_star(rs.getFloat("item_avg_star"));
+				 dto.setItem_avg_star(rs.getFloat("ITEM_AVG_STAR"));
 				 
-				 dto.setItem_delivery_fee(rs.getInt("item_delivery_fee"));
+				 dto.setItem_delivery_fee(rs.getInt("ITEM_DELIVERY_FEE"));
 				 
-				 dto.setItem_category(rs.getString("item_category"));
+				 dto.setItem_category(rs.getString("ITEM_CATEGORY"));
 				 
-				 dto.setItem_num(rs.getInt("item_num"));
+				 dto.setItem_num(rs.getInt("ITEM_REVIEW_NUM"));
 				 
-				 dto.setWish(rs.getInt("wish"));
+				 dto.setWish(rs.getInt("WISH"));
 				 
-				 dto.setUrl(rs.getString("url"));
+				 dto.setUrl(rs.getString("URL"));
 				 
-				 dto.setMax_speed_km(rs.getInt("max_speed_km"));
+				 dto.setMax_speed_km(rs.getInt("MAX_SPEED_KM"));
 				 
-				 dto.setMileage_km(rs.getInt("mileage_km"));
+				 dto.setMileage_km(rs.getInt("MILEAGE_KM"));
 				 
-				 dto.setBack_angle_do(rs.getInt("back_angle_do"));
+				 dto.setBack_angle_do(rs.getInt("BACK_ANGLE_DO"));
 				 
-				 dto.setGear_dan(rs.getInt("gear_dan"));
+				 dto.setGear_dan(rs.getInt("GEAR_DAN"));
 				 
-				 dto.setWheel_inch(rs.getFloat("wheel_inch"));
+				 dto.setWheel_inch(rs.getFloat("WHEEL_INCH"));
 				 
-				 dto.setWeight_kg(rs.getFloat("weight_kg"));
+				 dto.setWeight_kg(rs.getFloat("WEIGHT_KG"));
 				 
-				 dto.setGearbox(rs.getString("gearbox"));
+				 dto.setGearbox(rs.getString("GEARBOX"));
 				 
-				 dto.setBrake(rs.getString("brake"));
+				 dto.setBrake(rs.getString("BRAKE"));
 				 
-				 dto.setHandle_type(rs.getString("handle_type"));
+				 dto.setHandle_type(rs.getString("HANDLE_TYPE"));
 				 
-				 dto.setFeature(rs.getString("feature"));
+				 dto.setFeature(rs.getString("FEATURE"));
 				 
-				 dto.setMotor_output_w(rs.getInt("motor_output_w"));
+				 dto.setMotor_output_w(rs.getInt("MOTOR_OUTPUT_W"));
 				 
-				 dto.setBattery_cap_ah(rs.getFloat("battery_cap_ah"));
+				 dto.setBattery_cap_ah(rs.getFloat("BATTERY_CAP_AH"));
 				 
-				 dto.setBattery_vol_v(rs.getFloat("battery_vol_v"));
+				 dto.setBattery_vol_v(rs.getFloat("BATTERY_VOL_V"));
 				 
-				 dto.setCharge_time_h(rs.getFloat("charge_time_h"));
+				 dto.setCharge_time_h(rs.getFloat("CHARGE_TIME_H"));
 				 
-				 dto.setSuspension(rs.getString("suspension"));
+				 dto.setSuspension(rs.getString("SUSPENSION"));
 				 
-				 dto.setFrame(rs.getString("frame"));
+				 dto.setFrame(rs.getString("FRAME"));
 				 
-				 dto.setSaddle(rs.getString("saddle"));
+				 dto.setSaddle(rs.getString("SADDLE"));
 				 
-				 dto.setType(rs.getString("type"));
+				 dto.setType(rs.getString("TYPE"));
 				 
-				 dto.setRelease_y(rs.getInt("release_y"));
+				 dto.setRelease_y(rs.getInt("RELEASE_Y"));
 				 
 			 } // while-end
 			 
@@ -200,5 +200,6 @@ public class ItemDAO {
 		
 		return cnt; // 총 글 갯수
 	} // getCount()-end
+	
 
 }
