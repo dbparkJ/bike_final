@@ -208,10 +208,5 @@ public class ItemDTO {
 	public void setRelease_y(Integer release_y) {
 		this.release_y = release_y;
 	}
-	
-	public List<Float> getChartData(){
-		List<Float> chartData= Arrays.asList((float)item_price,(float)max_speed_km,(float)mileage_km,(float)gear_dan,(float)wheel_inch,(float)weight_kg,(float)motor_output_w,battery_cap_ah,battery_vol_v,charge_time_h);
-		return chartData;
-	}
-	
+
 }

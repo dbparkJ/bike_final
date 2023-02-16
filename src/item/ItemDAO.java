@@ -29,23 +29,45 @@ public class ItemDAO {
 	/*
 	 * 새상품 리스트화
 	 */
-	public List<ItemDTO> newitem(int start, int cnt){ 
+	public List<ItemDTO> newitem(int start, int cnt, String keyword){ 
 		List<ItemDTO> list = null;
 		try{
 			con = DBConnection.getInstance().getConnection();
 			
-			pstmt=con.prepareStatement("select * from new_item_info where rownum>=? and rownum<=?");
+			//검색어가 없으면
+			if(keyword.equals(null) || keyword.equals("") || keyword.length()<1){				
+				pstmt=con.prepareStatement("SELECT * FROM(SELECT ROWNUM AS RNUM, T1.* FROM new_item_info T1)"
+						 + "WHERE RNUM BETWEEN ? AND ?");
+
+				pstmt.setInt(1,start);
+				pstmt.setInt(2,cnt);
 			
-			pstmt.setInt(1,start-1); // 0에서부터 시작이기때문에 -1을 해준다
-			pstmt.setInt(2,cnt); // 갯수
-			
+			//검색어가 있으면
+			}else{	 				
+//				pstmt=con.prepareStatement("select * from new_item_info where item_name like '%"+keyword+"%' "
+//						+ "order by item_avg_star desc");
+				
+				pstmt=con.prepareStatement("SELECT *\r\n"
+						+ "  FROM (\r\n"
+						+ " SELECT ROW_NUMBER() OVER (ORDER BY item_id) NUM\r\n"
+						+ "             , A.*\r\n"
+						+ "          FROM (select * from new_item_info  where item_name like '%"+keyword+"%') A\r\n"
+						+ "         ORDER BY item_id\r\n"
+						+ "        ) \r\n"
+						+ " WHERE NUM BETWEEN ? AND ?");
+				
+				pstmt.setInt(1,start);
+				pstmt.setInt(2,cnt);
+							
+			}//else-end
+
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()){
 				list = new ArrayList<ItemDTO>();
 				
 				do {
-					ItemDTO dto = new ItemDTO();
+				ItemDTO dto = new ItemDTO();
 				
 				dto.setItem_id(rs.getInt("item_id"));
 				dto.setItem_name(rs.getString("item_name"));
@@ -81,9 +103,66 @@ public class ItemDAO {
 	}//newitem()-end
 	
 	/*
-	 * 글갯수, 페이지, 블럭처리에 필요함
+	 * 상품갯수, 페이지, 블럭처리에 필요함
 	 */
-//-------------------------------------------------------------------------------------------
+	public int getCount(){
+		int cnt=0;
+		
+		try{
+			con = DBConnection.getInstance().getConnection();
+						
+			pstmt=con.prepareStatement("select count(*) from new_item_info"); // 상품갯수조회
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				cnt=rs.getInt(1); // 1 필드번호
+			}
+			
+		}catch(Exception ex){
+			System.out.println("getCount()예외 : "+ex);
+		}finally{
+			try{
+				if(rs != null){rs.close();}
+				if(pstmt != null){pstmt.close();}
+				if(con != null){con.close();}
+				
+			}catch(Exception ex2){}
+		} // finally-end
+		
+		return cnt; // 총 상품갯수
+	} // getCount()-end
+	
+	
+	public int getSearchCount(String keyword){
+		int cnt=0;
+		
+		try{
+			con = DBConnection.getInstance().getConnection();
+						
+			pstmt=con.prepareStatement("SELECT count(*) FROM(SELECT ROWNUM AS RNUM, T1.* FROM new_item_info T1) "
+					+ "where item_name like '%"+keyword+"%'"); // 상품갯수조회
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				cnt=rs.getInt(1); // 1 필드번호
+			}
+			
+		}catch(Exception ex){
+			System.out.println("getSearchCount()예외 : "+ex);
+		}finally{
+			try{
+				if(rs != null){rs.close();}
+				if(pstmt != null){pstmt.close();}
+				if(con != null){con.close();}
+				
+			}catch(Exception ex2){}
+		} // finally-end
+		
+		return cnt; // 검색한 후의 상품갯수
+	} // getSearchCount()-end
+
+	
+	//============================================================================================================
 	/*
 	 * 아이템 정보 가져옴
 	 */
@@ -172,34 +251,7 @@ public class ItemDAO {
 		 } // finally-end
 		 
 		 return dto;
-	 } // getStyleDetail()-end
 
-	public int getCount(){
-		int cnt=0;
-		
-		try{
-			con = DBConnection.getInstance().getConnection();
-						
-			pstmt=con.prepareStatement("select count(*) from new_item_info"); // 상품갯수조회
-			rs=pstmt.executeQuery();
-			
-			if(rs.next()){
-				cnt=rs.getInt(1); // 1 필드번호
-			}
-			
-		}catch(Exception ex){
-			System.out.println("getCount()예외 : "+ex);
-		}finally{
-			try{
-				if(rs != null){rs.close();}
-				if(pstmt != null){pstmt.close();}
-				if(con != null){con.close();}
-				
-			}catch(Exception ex2){}
-		} // finally-end
-		
-		return cnt; // 총 글 갯수
-	} // getCount()-end
+	 } // getItem()-end
 	
-
 }
