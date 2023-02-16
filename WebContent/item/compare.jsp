@@ -6,8 +6,25 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+
+
+
 <body>
-${CompareItem.getItem_name()}
+
+<script>
+var compareData= new Array()
+compareData.push(${ CompareItem.getChartData()})
+console.log(compareData)
+</script>
+
+
 <img src="${CompareItem.getItem_img()}">
+
+${ CompareItem.getChartData()}
+
+
+
+
+
 </body>
 </html>

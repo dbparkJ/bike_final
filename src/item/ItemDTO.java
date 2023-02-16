@@ -1,5 +1,8 @@
 package item;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ItemDTO {
 	private String item_name;
 	private Integer item_id;
@@ -30,6 +33,7 @@ public class ItemDTO {
 	private String frame;
 	private String saddle;
 	private String type;
+	
 	public String getItem_name() {
 		return item_name;
 	}
@@ -205,8 +209,9 @@ public class ItemDTO {
 		this.release_y = release_y;
 	}
 	
-	public void getChartData() {
-		float[] chartData= {};
+	public List<Float> getChartData(){
+		List<Float> chartData= Arrays.asList((float)item_price,(float)max_speed_km,(float)mileage_km,(float)gear_dan,(float)wheel_inch,(float)weight_kg,(float)motor_output_w,battery_cap_ah,battery_vol_v,charge_time_h);
 		return chartData;
 	}
+	
 }

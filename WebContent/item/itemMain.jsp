@@ -29,7 +29,7 @@
 									</div>
 									<div class="card-footer text-end">
 										<a class="text-muted fs-6" href="${items.url}">구매하러가기</a>
-										<a class="text-muted fs-6" href="${ctxpath}/item/itemCompare.jsp?item_id=${items.item_id}&pageNum=${currentPage}">상품비교하러가기</a>
+										<a class="text-muted fs-6" href="${ctxpath}/item/itemCompare.do?item_id=${items.item_id}">상품비교하러가기</a><!-- &pageNum=${currentPage}--!> -->
 									</div>
 								</div>
 							</div>
