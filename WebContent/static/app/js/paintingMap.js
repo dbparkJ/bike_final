@@ -80,7 +80,7 @@ function drawingLine(data){
 				    strokeWeight: 5, // 선의 두께 입니다
 				    strokeColor: 'red', // 선의 색깔입니다
 				    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-				    strokeStyle: 'dashdot', // 선의 스타일입니다
+				    strokeStyle: 'solid', // 선의 스타일입니다
 				    endArrow : true
 				});
 }
@@ -128,6 +128,9 @@ function creatgraph(data,keyword){
 				mode: 'X',
 				intersect: true
 			},
+			label : {
+				display : false
+			},
 			scales: {
 				xAxes: [{
 					display: false,
@@ -137,9 +140,9 @@ function creatgraph(data,keyword){
 					}
 				}],
 				yAxes: [{
-					display: true,
+					display: false,
 					scaleLabel: {
-						display: true,
+						display: false,
 					},
 				}]
 				}
@@ -249,6 +252,22 @@ function repairShopMarker(data){
 		Markers.push(marker);
 	}
 }
+function bikeRealTimeMarker(data){
+	var imageSize = new kakao.maps.Size(40, 40); // 마커 이미지의 이미지 크기 입니다
+	var imageSrc = "../static/app/img/bike-parking.png"; 
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
+	for(var i=0; i<data.length; i++){
+		var	marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: new kakao.maps.LatLng(data[i].lat,data[i].lon), // 마커를 표시할 위치
+	        image : markerImage
+	    	});
+		
+	        /*kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker));*/
+    		/*kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow)); */
+		Markers.push(marker);
+	}
+}
 //------------------------------------------------------------------------------------------------
 function naverStoreList(singlecorsename,latlon_AVG){
 	removemarkers()
@@ -315,6 +334,22 @@ function repairShopList(singlecorsename,latlon_AVG){
 				dataType : "JSON",
 				success : function(data){
 					repairShopMarker(data)
+				}
+		})
+	}
+}
+function bikeRealTimeList(latlon_AVG){
+	removemarkers()
+	if(infowindow != null){
+		infowindow.close();
+	}else{
+		$.ajax({
+				type : "GET",
+				url : "../json/bikeRealTime.jsp?&minlon="+latlon_AVG[2]+"&maxlon="+latlon_AVG[3]+
+				"&minlat="+latlon_AVG[4]+"&maxlat="+latlon_AVG[5],
+				dataType : "JSON",
+				success : function(data){
+					bikeRealTimeMarker(data)
 				}
 		})
 	}

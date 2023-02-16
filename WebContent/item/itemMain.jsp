@@ -8,11 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body class="mx-5 pt-5">
-	<h2>시작행${startRow}///////끝행${endRow}/////////상품갯수임${count}</h2>
-	<h2>시작페이지${startPage}///////끝페이지${endPage}</h2>
-	<h2>pageCount${pageCount}</h2>
-	<h2>${keyword2}</h2>
+<body>
 	<%-- 검색어입력폼 --%>
 	<form name="searchForm">
     <table align="center">
@@ -20,7 +16,7 @@
         <td align="right" valign="bottom">
           <input type="text" name="keyword2" id="keyword2" size="30" placeholder="검색어를 입력하세요.">
 			  <a href="${ctxpath}/item/itemMain.do?keyword2=${keyword2}">
- 				<input type="image" src="data_applenews_emoji_update_2017_12.png" width="50px">
+ 				<input type="image" src="search.png" width="40px">
 			  </a> 
 			  
 			  <select id="category" onchange="changeSelection">
