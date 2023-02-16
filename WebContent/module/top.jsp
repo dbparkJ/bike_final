@@ -24,6 +24,7 @@
             자전거 구매하러가기
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><a class="dropdown-item" href="${ctxpath}/item/itemCompare.do">상품비교</a></li>
             <li><a class="dropdown-item" href="${ctxpath}/item/itemMain.do">상품</a></li>
             <li><a class="dropdown-item" href="${ctxpath}/goods/usedgoods.do">중고상품</a></li>
           </ul>

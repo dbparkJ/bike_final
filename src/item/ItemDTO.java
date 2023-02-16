@@ -12,6 +12,7 @@ public class ItemDTO {
 	private Integer wish;
 	private String url;
 	private Integer max_speed_km;
+	private Integer release_y;
 	private Integer mileage_km;
 	private Integer back_angle_do;
 	private Integer gear_dan;
@@ -196,5 +197,16 @@ public class ItemDTO {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public Integer getRelease_y() {
+		return release_y;
+	}
+	public void setRelease_y(Integer release_y) {
+		this.release_y = release_y;
+	}
+	
+	public void getChartData() {
+		float[] chartData= {};
+		return chartData;
 	}
 }
