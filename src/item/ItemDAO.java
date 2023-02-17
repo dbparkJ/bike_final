@@ -32,11 +32,14 @@ public class ItemDAO {
 	public List<ItemDTO> newitem(int start, int cnt, String keyword, String category){ 
 		List<ItemDTO> list = null;
 		
-		System.out.println("카테고리: "+category);
-		System.out.println("서칭키워드: "+keyword);
-		if (keyword == "삼천리") {System.out.println("검색함요");}
+		String parameter = keyword;
+		if (parameter == "스포츠") {
+			System.out.println("검색함요");
+			}
 		
-		if(category =="b") {System.out.println("카테고리b");}
+		if(category =="b") {
+			System.out.println("카테고리b");
+			}
 		try{
 			con = DBConnection.getInstance().getConnection();
 			
