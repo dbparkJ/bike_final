@@ -20,8 +20,13 @@
 			<li><hr class="dropdown-divider"></li>
 			<li>
 				<c:forEach var="singleCorse" items="${singleCorseList}">
-					<div class="d-grid">
-						<button class="btn btn-outline-white" keyword = "${singleCorse.name}" onclick="PaintingLine(this.getAttribute('keyword'))">${singleCorse.name}</button>
+					<div class="card" style="width: 18rem;">
+					  <img src="${singleCorse.item_img}" class="card-img-top" alt="...">
+					  <div class="card-body">
+					    <h5 class="card-title">Card title</h5>
+					    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					  </div>
 					</div>	
 				</c:forEach>
 			</li>

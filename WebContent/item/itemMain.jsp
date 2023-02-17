@@ -60,7 +60,7 @@
 											<p class="card-text fs-5">배송비<fmt:formatNumber value="${items.item_delivery_fee}" type="number"/>원</p>
 										</div>
 										<div class="card-footer text-end">
-											<a class="text-muted fs-6" href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}">상세보기</a>
+											<a class="text-muted fs-6" href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}" onclick="recommandItemList(${items.item_id})">상세보기</a>
 										</div>
 
 									</div>
