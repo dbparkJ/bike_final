@@ -10,24 +10,6 @@
 	<body>
 		<jsp:include page="/module/modal.jsp" flush="false"/>
 		<div class="border bg-light" style="width: 100%; height: 100%;">
-			<div class="justify-content-between d-flex" style="height: 93%;">
-				<div class="border"id="map" style="width:88%; height: 100%;"></div>
-				<div class="navigation">
-				</div>
-				 <div class="category">
-					 <div class="border" style="width:100%;height:100%">
-						<canvas id="myChart"></canvas>
-					</div>
-				 </div>
-				<jsp:include page="weather.jsp" flush="false"/>
-			</div>
-		</div>
-	</body>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17d6d1b98aeed31a6b874f4a6fd6d957"></script>    
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js"></script>
-</html>
-
 <div class="btn-group ms-5">
 	<div class="py-2 text-white">
 		<button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
@@ -64,3 +46,20 @@
 		<button class="btn btn-danger" onclick="bikeRealTimeList(latlon_AVG)"> 따릉이 정류소</button>
 	</div>
 </div>
+			<div class="justify-content-between d-flex" style="height: 93%;">
+				<div class="border"id="map" style="width:88%; height: 100%;"></div>
+				<div class="navigation">
+				</div>
+				 <div class="category">
+					 <div class="border" style="width:100%;height:100%">
+						<canvas id="myChart"></canvas>
+					</div>
+				 </div>
+				<jsp:include page="weather.jsp" flush="false"/>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17d6d1b98aeed31a6b874f4a6fd6d957"></script>    
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js"></script>
+</html>

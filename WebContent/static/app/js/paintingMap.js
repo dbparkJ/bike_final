@@ -204,7 +204,7 @@ function drwaingNaverMarker(data){
 
 function drwaingKakaoMarker(data){
 	var imageSize = new kakao.maps.Size(30, 30); // 마커 이미지의 이미지 크기 입니다
-	var imageSrc = "../static/app/img/kakaomarker.png"; 
+	var imageSrc = "../static/app/img/coffee-cup.png"; 
 	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
 	
 	for(var i=0; i<data.length; i++){
