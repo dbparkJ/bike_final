@@ -174,32 +174,104 @@ function removemarkers(){
    Markers=[];
 }
 //------------------------------------------------------------------------------------------------
+/*function drwaingNaverMarker(data){
+	var imageSize = new kakao.maps.Size(30, 30); // 마커 이미지의 이미지 크기 입니다
+	var imageSrc = "../static/app/img/navermarker.png"; 
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
+	for(var i=0; i<data.length; i++){
+		var	marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: new kakao.maps.LatLng(data[i].lat,data[i].lon), // 마커를 표시할 위치
+	        image : markerImage
+	    	});
+	    var infowindow = new kakao.maps.InfoWindow({
+        	content: '<div class="py-2 mx-2">'+
+        	'<p>'+data[i].store_name+'</p>'+
+        	'<p>식당분류 : '+data[i].cate_c+'</p>'+
+        	'<p>주소 : '+data[i].addr+'</p>'+
+        	'<p>별점 : '+data[i].naver_star_avg+'</p>'+
+        	'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">'+
+        	'Launch demo modal'+
+        	'</button>'+
+        	'</div>'
+	        });
+	        kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+	      	$('#exampleModal').on('show.bs.modal', function (event) {
+			  var modal = $(this)
+			  console.log(data[i].store_name)
+			  // 모달 내용에 데이터 삽입
+			  modal.find('.modal-body').html(
+			    '<p>이름: ' + data[i].store_name + '</p>' +
+			    '<p>이메일: ' + data[i].cate_c + '</p>' 
+			  )
+			});
+    		kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
+    		Markers.push(marker);
+    		
+	}
+}*/
+
 function drwaingNaverMarker(data){
-   var imageSize = new kakao.maps.Size(30, 30); // 마커 이미지의 이미지 크기 입니다
-   var imageSrc = "../static/app/img/navermarker.png"; 
-   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
-   for(var i=0; i<data.length; i++){
-      var   marker = new kakao.maps.Marker({
-           map: map, // 마커를 표시할 지도
-           position: new kakao.maps.LatLng(data[i].lat,data[i].lon), // 마커를 표시할 위치
-           image : markerImage
-          });
-       var infowindow = new kakao.maps.InfoWindow({
-           content: '<div class="py-2 mx-2">'+
-           '<p>'+data[i].store_name+'</p>'+
-           '<p>식당분류 : '+data[i].cate_c+'</p>'+
-           '<p>주소 : '+data[i].addr+'</p>'+
-           '<p>별점 : '+data[i].naver_star_avg+'</p>'+
-           '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">'+
-           'Launch demo modal'+
-           '</button>'+
-           '</div>'
-           });
-      
-           kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
-          kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
-          Markers.push(marker);
-   }
+  var imageSize = new kakao.maps.Size(30, 30);
+  var imageSrc = "../static/app/img/navermarker.png";
+  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+  for(var i=0; i<data.length; i++){
+    var content = '<div class="py-2 mx-2">'+
+      '<p>'+data[i].store_name+'</p>'+
+      '<p>식당분류 : '+data[i].cate_c+'</p>'+
+      '<p>주소 : '+data[i].addr+'</p>'+
+      '<p>별점 : '+data[i].naver_star_avg+'</p>'+
+      '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"'+
+      'data-storename="' + data[i].store_name + '"'+
+      'data-addr="'+data[i].addr+'"'+
+      'data-naver_star_avg="'+data[i].naver_star_avg+'"'+
+      'data-naver_review_num="'+data[i].naver_review_num+'"'+
+      'data-naver_url='+data[i].naver_url+'"'+
+      'data-cate_b='+data[i].cate_b+'"'+
+      'data-cate_c='+data[i].cate_c+'"'+
+      '>' +
+      '가게 상세보기' +
+      '</button>' +
+      '</div>';
+    var marker = new kakao.maps.Marker({
+      map: map,
+      position: new kakao.maps.LatLng(data[i].lat,data[i].lon),
+      image : markerImage
+    });
+    var infowindow = new kakao.maps.InfoWindow({
+      content: content
+    });
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+
+      $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var storename = button.data('storename');
+        var addr = button.data('addr');
+        var naver_review_num = button.data('naver_review_num');
+        var naver_star_avg = button.data('naver_star_avg');
+        var naver_url = button.data('naver_url');
+        var cate_b = button.data('cate_b');
+        var cate_c = button.data('cate_c');
+        var modal = $(this);
+        console.log(data[i].cate_c);
+        // 모달 내용에 데이터 삽입
+        modal.find('.modal-body').html(
+          '<p>이름: ' + storename + '</p>' +
+          '<p>이름: ' + naver_review_num + '</p>' +
+          '<p>이름2: ' + addr + '</p>' +
+          '<p>이름3: ' + naver_star_avg + '</p>' +
+          '<p>이름4: ' + naver_url + '</p>' +
+          '<p>이름5: ' + cate_b + '</p>' +
+          '<p>이름6: ' + cate_c + '</p>' 
+        );
+      });
+
+
+    kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
+    Markers.push(marker);
+  }
+
 }
 
 function drwaingKakaoMarker(data){
@@ -375,23 +447,4 @@ function requestFlask(){
          url : "192.168.0.146:5000/recommandItem?item_id="+pass+"&cosine_weight="+pass
    })
 }
-//------------------------------------------------------------------------------------------------
-$(document).ready(function() {
-  // 모달이 열릴 때 이벤트 처리
-  $('#exampleModal').on('show.bs.modal', function(event) {
-    // 데이터 입력란 초기화
-    $('#exampleModalLabel').val('hi');
-  });
-
-  // 추가 버튼 클릭 시 이벤트 처리
-  $('#add-data-btn').on('click', function() {
-    // 입력된 데이터 가져오기
-    var data = $('#input-data').val();
-
-    // TODO: 데이터 추가 처리 (예: 서버로 데이터 전송)
-
-    // 모달 닫기
-    $('#exampleModal').modal('hide');
-  });
-});
 //------------------------------------------------------------------------------------------------

@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="../static/app/css/item_main.css">
 </head>
 <body>
+
 	<%-- 검색어입력폼 --%>
 	<form name="searchForm" class="d-flex" role="search">
 		<div class="d-inline-flex p-2 bd-highlight">
