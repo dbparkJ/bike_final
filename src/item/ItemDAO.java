@@ -1,15 +1,31 @@
 package item;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import db.DBConnection;
 import item.*;
+import map.corseDTO.CorseList;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 
 
 public class ItemDAO { 
@@ -174,65 +190,35 @@ public class ItemDAO {
 			 pstmt = con.prepareStatement("select * from new_item_info where item_id="+item_id);
 			 rs=pstmt.executeQuery();
 			 
-			 
 			 while(rs.next()){
-				 
 				 dto.setItem_id(rs.getInt("ITEM_ID"));
-				 
 				 dto.setItem_name(rs.getString("ITEM_NAME"));
-				 
 				 dto.setItem_img(rs.getString("ITEM_IMG"));
-				 
 				 dto.setItem_price(rs.getInt("ITEM_PRICE"));
-				 
 				 dto.setItem_avg_star(rs.getFloat("ITEM_AVG_STAR"));
-				 
 				 dto.setItem_delivery_fee(rs.getInt("ITEM_DELIVERY_FEE"));
-				 
 				 dto.setItem_category(rs.getString("ITEM_CATEGORY"));
-				 
 				 dto.setItem_num(rs.getInt("ITEM_REVIEW_NUM"));
-				 
 				 dto.setWish(rs.getInt("WISH"));
-				 
 				 dto.setUrl(rs.getString("URL"));
-				 
 				 dto.setMax_speed_km(rs.getInt("MAX_SPEED_KM"));
-				 
 				 dto.setMileage_km(rs.getInt("MILEAGE_KM"));
-				 
 				 dto.setBack_angle_do(rs.getInt("BACK_ANGLE_DO"));
-				 
 				 dto.setGear_dan(rs.getInt("GEAR_DAN"));
-				 
 				 dto.setWheel_inch(rs.getFloat("WHEEL_INCH"));
-				 
 				 dto.setWeight_kg(rs.getFloat("WEIGHT_KG"));
-				 
 				 dto.setGearbox(rs.getString("GEARBOX"));
-				 
 				 dto.setBrake(rs.getString("BRAKE"));
-				 
 				 dto.setHandle_type(rs.getString("HANDLE_TYPE"));
-				 
 				 dto.setFeature(rs.getString("FEATURE"));
-				 
 				 dto.setMotor_output_w(rs.getInt("MOTOR_OUTPUT_W"));
-				 
 				 dto.setBattery_cap_ah(rs.getFloat("BATTERY_CAP_AH"));
-				 
 				 dto.setBattery_vol_v(rs.getFloat("BATTERY_VOL_V"));
-				 
 				 dto.setCharge_time_h(rs.getFloat("CHARGE_TIME_H"));
-				 
 				 dto.setSuspension(rs.getString("SUSPENSION"));
-				 
 				 dto.setFrame(rs.getString("FRAME"));
-				 
 				 dto.setSaddle(rs.getString("SADDLE"));
-				 
 				 dto.setType(rs.getString("TYPE"));
-				 
 				 dto.setRelease_y(rs.getInt("RELEASE_Y"));
 				 
 			 } // while-end
@@ -252,4 +238,86 @@ public class ItemDAO {
 
 	 } // getItem()-end
 	
+	public List<ItemDTO> getAIRecommand(Integer item_id){
+		List<ItemDTO> recommandList = new ArrayList<>();
+		HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://192.168.0.146:5000/recommandItem?item_id="+item_id+"&cosine_weight=3"))
+            .header("Content-Type", "application/json")
+            .GET()
+            .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            String responseBody = response.body();
+            
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(responseBody);
+            
+            Integer result1 = Integer.parseInt(jsonObject.get("result1").toString());
+            Integer result2 = Integer.parseInt(jsonObject.get("result2").toString());
+            Integer result3 = Integer.parseInt(jsonObject.get("result3").toString());
+            Integer result4 = Integer.parseInt(jsonObject.get("result4").toString());
+            Integer result5 = Integer.parseInt(jsonObject.get("result5").toString());
+            
+            ItemDAO itemDAO=ItemDAO.getDao(); 
+			ItemDTO item_1=itemDAO.getItem(result1);
+			ItemDTO item_2=itemDAO.getItem(result2);
+			ItemDTO item_3=itemDAO.getItem(result3);
+			ItemDTO item_4=itemDAO.getItem(result4);
+			ItemDTO item_5=itemDAO.getItem(result5);
+			
+			recommandList.add(item_1);
+			recommandList.add(item_2);
+			recommandList.add(item_3);
+			recommandList.add(item_4);
+			recommandList.add(item_5);
+			
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+		return recommandList;
+	}
+	//*
+	
+	
+	/*
+	 * 새상품 리스트화
+	 */
+	public List<Float> getChartList(int item_id){ 
+	List<Float> list = null;
+	
+	System.out.println("아이디: "+item_id);
+	try{
+		con = DBConnection.getInstance().getConnection();	
+		pstmt=con.prepareStatement("select item_category,item_price, item_avg_star, "
+					+ "gear_dan,wheel_inch,weight_kg, motor_output_w,"
+					+ "battery_cap_ah, battery_vol_v, charge_time_h "
+					+ "from new_item_info where item_id=?");
+		pstmt.setInt(1,item_id);
+		rs=pstmt.executeQuery();
+		list = new ArrayList<Float>(Arrays.asList((float)rs.getInt("item_price")/10000));
+		
+	}catch(Exception ex){
+		System.out.println("newitem 예외 : "+ex);
+	}finally{
+		try{
+			if(rs!=null){
+				rs.close();
+			}
+			if(pstmt!=null){
+				pstmt.close();
+			}
+			if(con!=null){
+				con.close();
+			}
+			if(stmt!=null) {
+				stmt.close();
+			}
+		}catch(Exception ex2){}
+	}//finally-end
+	
+	return list;
+
+	}//getChartList()-end
 }

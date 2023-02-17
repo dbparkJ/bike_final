@@ -62,6 +62,7 @@
 													<span class="text-muted"><img src ="star (2).png" width="15" height="15"> ${items.item_avg_star}/5</span>
 												</div>
 											</div>
+
 										</div>
 									</div>
 								</div>
