@@ -1,7 +1,8 @@
 package item;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ItemDTO {
 	private String item_name;
@@ -208,5 +209,5 @@ public class ItemDTO {
 	public void setRelease_y(Integer release_y) {
 		this.release_y = release_y;
 	}
-
+	
 }
