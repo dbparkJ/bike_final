@@ -7,97 +7,99 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<script>
-		${searchBtn}.click(function(){
-			var keyword2 = ${keyword2}.val();
-			var select = $('#serachForm option:selected').val();
-			
-		});
-	</script>
+<link rel="stylesheet" href="../static/app/css/item_main.css">
 </head>
 <body>
-	<form id="searchForm" name="serachForm" method="get">
-    <table align="center">
-      <tr>
-        <td align="right" valign="bottom">
-          <!-- <select id="category" name="category">
-			  <option value="a">신상품순</option>
-			  <option value="b">높은리뷰순</option>
-			  <option value="c">낮은가격순</option>
-			  <option value="d">높은가격순</option>
-	      </select> -->
-          <input type="text" name="keyword2" id="keyword2" size="30" placeholder="검색어를 입력하세요.">
-			  <a href="${ctxpath}/item/itemMain.do?keyword2=${keyword2}?category=${category}">
- 				<input type="image" id="searchBtn" src="data_applenews_emoji_update_2017_12.png" width="50px">
-			  </a> 
-          </td>
-        </tr>
-      </table>
-    </form> 
+
+	<%-- 검색어입력폼 --%>
+	<form name="searchForm" class="d-flex" role="search">
+		<div class="d-inline-flex p-2 bd-highlight">
+			<input class="form-control me-2" name="keyword2" id="keyword2" type="search" placeholder="Search" aria-label="Search">
+		</div>
+		<a href="${ctxpath}/item/itemMain.do?keyword2=${keyword2}">
+			<button class="btn btn-outline-success" type="submit">Search</button>
+		</a>
+	</form>
+    
+	<c:if test="${null ne keyword2}">
+    <p align="center" class="h5"><font size="+6">'${keyword2}'</font>에 대한 검색결과</p>
+	</c:if>
 	<div class="pb-5">
 		<div class="container-md pt-5">
-			<div class="pb-5">				
+		<c:if test="${null ne keyword2 && '' ne keyword2}"><button type="button" onclick="location.href='${ctxpath}/item/itemMain.do'">전체</button><p class="fw-bold">총 ${count}건</p>
+		</c:if>
+		<c:if test="${null ne keyword2 && '' eq keyword2}"><button type="button" onclick="location.href='${ctxpath}/item/itemMain.do'">전체</button><p class="fw-bold">총 0건</p>
+		</c:if>
+			<div class="pb-5">					
 				<div class="row row-cols-1 row-cols-md-4 g-5 bg-light">
 						<%-- 상품이 없을때 --%>
-						<c:if test="${count==0}">
-						등록된 상품이 없습니다.
+						<c:if test="${count== 0 || '' eq keyword2}">
+						<span class="card-text fs-5 text-center">검색된 상품이 없습니다</span>
 						</c:if>
-						<%-- 상품이 있을때  --%>
-						<c:if test="${count>0}">
-
+						
+						<%-- 상품이 있을때 --%>
+						<c:if test="${count>0 && '' ne keyword2}">
 							<c:forEach var="items" items="${itemlist}">
+								<a href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}" class="items">
 								<div class="col">
 									<div class="card h-100">
 										<img src="${items.item_img}" class="card-img border" alt="...">
 										<div class="card-body">
-											<p class="card-text fs-5">${items.item_name}</p>
-											<p class="card-text fs-5">리뷰${items.item_avg_star}/5</p>
-										</div>
-										<div class="text-end ">
-											<p class="card-text fs-5"><fmt:formatNumber value="${items.item_price}" type="number"/>원</p>
-											<p class="card-text fs-5">배송비<fmt:formatNumber value="${items.item_delivery_fee}" type="number"/>원</p>
-										</div>
-										<div class="card-footer text-end">
-											<a class="text-muted fs-6" href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}">상세보기</a>
-										</div>
+											<div class="pb-auto">
+												<%-- 배송비가없다면 --%>
+												<c:if test = "${items.item_delivery_fee==0}">
+													<span class="text-muted text-muted fw-bold" id="font_size">무료배송</span><br>
+												</c:if>
+												<c:if test = "${items.item_delivery_fee!=0}">
+													<span class="text-muted text-muted fw-bold" id="font_size"> </span><br>
+												</c:if>
+												<span class="card-text fs-8" id="item_name_font">${items.item_name}</span><br>
+											</div>
+											<div class="">
+												<div class="d-flex flex-row-reverse">
+													<span class="card-text fs-4 fw-bold"><fmt:formatNumber value="${items.item_price}" type="number"/>원</span><br>
+												</div>
+												<div class="d-flex flex-row-reverse">
+													<span class="text-muted"><img src ="star (2).png" width="15" height="15"> ${items.item_avg_star}/5</span>
+												</div>
+											</div>
 
+										</div>
 									</div>
 								</div>
+								</a>
 							</c:forEach>
 						</c:if>
 				 </div>
+				 	
 			</div>
 		</div>
-			<%-- 페이지 테이블 --%>
-			<table class="wid" align="center">
-				<tr>
-					<td align="center">
-						<c:if test="${count>0}">
-						
-						<%-- 에러방지 --%>
-						<c:if test="${endPage>pageCount}">
-							<c:set var="endPage" value="${pageCount}"/>
-						</c:if>
-						
-						<%-- 이전블럭 --%>
-						<c:if test="${startPage>10}">
-							<a href="${ctxpath}/item/itemMain.do?pageNum=${startPage-10}&keyword2=${keyword2}">[이전]</a>
-						</c:if>
-						
-						<%-- 페이지처리 --%>
-						<c:forEach var="i" begin="${startPage}" end="${endPage}">
-							<a href="${ctxpath}/item/itemMain.do?pageNum=${i}&keyword2=${keyword2}">[${i}]</a> <%-- 프로퍼티파일에서 입력한 경로 ... --%>
-						</c:forEach>
-						
-						<%-- 다음블럭 --%>
-						<c:if test="${endPage<pageCount}">
-							<a href="${ctxpath}/item/itemMain.do?pageNum=${startPage+10}&keyword2=${keyword2}">[다음]</a>			
-						</c:if>
-						
-						</c:if>
-					</td>
-				</tr>
-			</table>
+		
+	   <c:if test="${count>0 && '' ne keyword2}">
+		<%-- 페이지 --%>		
+		<nav aria-label="Page navigation example">
+  		 <ul class="pagination justify-content-center">
+  		 	<%-- 에러방지 --%>
+			<c:if test="${endPage>pageCount}">
+				<c:set var="endPage" value="${pageCount}"/>
+			</c:if>
+		    <%-- 이전블럭 --%>
+		    <c:if test="${startPage>10}">
+		    	<a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${startPage-10}${keywordParameter}" tabindex="-1" aria-disabled="true">◁</a>
+		    </c:if>
+		    <%-- 페이지처리 --%>
+		    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+		    	<li class="page-item"><a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${i}${keywordParameter}">${i}</a></li>
+		    </c:forEach>
+		    <li class="page-item">
+		      <%-- 다음블럭 --%>
+		      <c:if test="${endPage<pageCount}">
+		      <a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${startPage+10}${keywordParameter}">▷</a>
+		      </c:if>
+		    </li>
+  		</ul>
+	   </nav>
+	   </c:if>
 	</div>
 </body>
 </html>

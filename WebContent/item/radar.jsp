@@ -8,6 +8,13 @@
 <title>데모 그래프</title>
 </head>
 <body>
+
+<img src="${CompareItem.getItem_img()}">
+${CompareItem.getItem_name()}
+${MyItem.getItem_name()}
+<img src="${MyItem.getItem_img()}">
+${MyItem.getChartData()}
+
 <div style="width:400px; height:400px; float:left;">
     <canvas id="myChart"></canvas>
 </div>
@@ -19,12 +26,25 @@
 <script>
 // 우선 컨텍스트를 가져옵니다. 
 	var type='radar'
-	var labels=['Eating','Drinking','Sleeping','Designing','Coding','Cycling','Running']
+	var labels=['가격','평균별점','기어(단)','바퀴(inch)','무게(kg)']
+	if (${MyItem.getChartData().size()}>5){
+		labels.push("최고속도(km)");
+		labels.push("주행거리(km)");
+		labels.push("모터출력(km)");
+		labels.push("배터리용량(km)");
+		labels.push("배터리전압(km)");
+		labels.push("충전시간()");
+	}
+	
+	var myData=${MyItem.getChartData()}
+	var recommandData=${CompareItem.getChartData()}
+
+	
 	var myData={
 			  labels: labels,
 				  datasets: [{
 				    label: 'Selected item',
-				    data: [65, 59, 90, 81, 56, 55, 40],
+				    data: myData,
 				    fill: true,
 				    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 				    borderColor: 'rgb(255, 99, 132)',
@@ -38,7 +58,7 @@
 			  labels: labels,
 				  datasets: [{
 					    label: 'Recommanded Item',
-					    data: [null, 48, 40, 19, 96, 27, 100],
+					    data: recommandData,
 					    fill: true,
 					    backgroundColor: 'rgba(54, 162, 235, 0.2)',
 					    borderColor: 'rgb(54, 162, 235)',
@@ -68,6 +88,8 @@
 	
 	var ctx2 = document.getElementById("recommandChart").getContext("2d");
 	var myRadar2 = new Chart(ctx2, recommandConfig);
+	
+
 /*
 - Chart를 생성하면서, 
 - ctx를 첫번째 argument로 넘겨주고, 
