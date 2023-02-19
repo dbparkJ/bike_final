@@ -12,26 +12,21 @@
 		<div class="border bg-light" style="width: 100%; height: 100%;">
 <div class="btn-group ms-5">
 	<div class="py-2 text-white">
-		<button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
-				코스 선택
-		</button>
-		<ul class="dropdown-menu dropdown-menu-light">
-			<li><a class="dropdown-item">서울근교</a></li>
-			<li><hr class="dropdown-divider"></li>
-			<li>
-				<c:forEach var="singleCorse" items="${singleCorseList}">
-					<div class="card" style="width: 18rem;">
-					  <img src="${singleCorse.item_img}" class="card-img-top" alt="...">
-					  <div class="card-body">
-					    <h5 class="card-title">Card title</h5>
-					    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-					    <a href="#" class="btn btn-primary">Go somewhere</a>
-					  </div>
-					</div>	
-				</c:forEach>
-			</li>
-		</ul>
-	</div>
+      <button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
+            코스 선택
+      </button>
+      <ul class="dropdown-menu dropdown-menu-light">
+         <li><a class="dropdown-item">서울근교</a></li>
+         <li><hr class="dropdown-divider"></li>
+         <li>
+            <c:forEach var="singleCorse" items="${singleCorseList}">
+               <div class="d-grid">
+                  <button class="btn btn-outline-white" keyword = "${singleCorse.name}" onclick="PaintingLine(this.getAttribute('keyword'))">${singleCorse.name}</button>
+               </div>   
+            </c:forEach>
+         </li>
+      </ul>
+   </div>
 	<div class="py-2 ms-3 text-white">
 		<button type="button" class="btn btn-danger dropdown-toggle me-3" data-bs-toggle="dropdown" aria-expanded="false">
 				주변 정보
@@ -66,5 +61,5 @@
 	</body>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17d6d1b98aeed31a6b874f4a6fd6d957"></script>    
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js"></script>
+	<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js?version=1"></script>
 </html>
