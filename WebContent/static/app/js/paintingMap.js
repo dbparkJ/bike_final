@@ -254,7 +254,7 @@ function drwaingNaverMarker(data){
         var cate_b = button.data('cate_b');
         var cate_c = button.data('cate_c');
         var modal = $(this);
-        console.log(data[i].cate_c);
+        /*console.log(data[i].cate_c);*/
         // 모달 내용에 데이터 삽입
         modal.find('.modal-body').html(
           '<p>이름: ' + storename + '</p>' +

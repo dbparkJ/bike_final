@@ -18,12 +18,12 @@ function ridingData(data,riding_dt){
 //======================================================
 function drawRadarChart(data){
 	var type='radar'
-	var labels=['Eating','Drinking','Sleeping','Designing','Coding','Cycling','Running']
+	var labels=['1','2','3','4','5','6','7','8','9','10','11']
 	var myData={
 			  labels: labels,
 				  datasets: [{
 				    label: 'Selected item',
-				    data: myData,
+				    data: [1,2,1,1,3,1,3,4,2,3,1],
 				    fill: true,
 				    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 				    borderColor: 'rgb(255, 99, 132)',

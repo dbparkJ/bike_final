@@ -209,15 +209,4 @@ public class ItemDTO {
 	public void setRelease_y(Integer release_y) {
 		this.release_y = release_y;
 	}
-	
-	public List<Float> getChartData(){
-		ArrayList<Float> chartDataList = new ArrayList<>(Arrays.asList((float)item_price/10000 ,item_avg_star,(float)gear_dan,wheel_inch,weight_kg));
-		if (item_category=="스포츠/레저>자전거>자전거/MTB>전기자전거") {
-			
-			Float[] elecChartDataList= {(float)max_speed_km,(float)mileage_km,(float)motor_output_w,battery_cap_ah,battery_vol_v,charge_time_h};
-			chartDataList.addAll(Arrays.asList(elecChartDataList));
-		} 
-		return chartDataList;
-	}
-
 }

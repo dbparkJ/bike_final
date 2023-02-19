@@ -17,20 +17,32 @@ public class CompareAction implements CommandAction{
 		ItemDTO MyItem=new ItemDTO();
 		ItemDTO CompareItem=new ItemDTO();
 		
+		List<String> MyItemChartLabel=null;
+		List<String> CompareItemChartLabel=null;
+		
+		List<Float> MyItemChartData=null;
+		List<Float> CompareItemChartData=null;
+
+		
 		ItemDAO itemDAO=ItemDAO.getDao();
 		
 		MyItem=itemDAO.getItem(myItemId);
 		CompareItem=itemDAO.getItem(recommandItemId);
 		
+		MyItemChartLabel=itemDAO.getChartLabel(myItemId);
+		CompareItemChartLabel=itemDAO.getChartLabel(recommandItemId);
+		
+		MyItemChartData=itemDAO.getChartData(myItemId);
+		CompareItemChartData=itemDAO.getChartData(recommandItemId);
+		
 		System.out.println(myItemId);
 		
 		request.setAttribute("CompareItem", CompareItem);
 		request.setAttribute("MyItem", MyItem);
-
-		List<Float> test=MyItem.getChartData();
-		for(float data: test) {
-			System.out.println(data);
-		}
+		request.setAttribute("CompareItemChartLabel", CompareItemChartLabel);
+		request.setAttribute("MyItemChartLabel", MyItemChartLabel);
+		request.setAttribute("CompareItemChartData", CompareItemChartData);
+		request.setAttribute("MyItemChartData", MyItemChartData);
 		
 		
 		return "/item/radar.jsp";

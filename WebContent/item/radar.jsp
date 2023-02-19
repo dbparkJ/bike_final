@@ -8,12 +8,34 @@
 <title>데모 그래프</title>
 </head>
 <body>
+<script>
+var labels=['가격','평균별점','기어(단)','바퀴(inch)','무게(kg)']
+</script>
 
+
+<div>
 <img src="${CompareItem.getItem_img()}">
 ${CompareItem.getItem_name()}
-${MyItem.getItem_name()}
+</div>
+
+<div>
+${CompareItemChartLabel}
+${CompareItemChartData }
+</div>
+
+<div>
 <img src="${MyItem.getItem_img()}">
-${MyItem.getChartData()}
+${MyItem.getItem_name()}
+</div>
+
+
+<div>
+${MyItemChartLabel}
+${MyItemChartData }
+</div>
+
+
+
 
 <div style="width:400px; height:400px; float:left;">
     <canvas id="myChart"></canvas>
@@ -26,22 +48,15 @@ ${MyItem.getChartData()}
 <script>
 // 우선 컨텍스트를 가져옵니다. 
 	var type='radar'
-	var labels=['가격','평균별점','기어(단)','바퀴(inch)','무게(kg)']
-	if (${MyItem.getChartData().size()}>5){
-		labels.push("최고속도(km)");
-		labels.push("주행거리(km)");
-		labels.push("모터출력(km)");
-		labels.push("배터리용량(km)");
-		labels.push("배터리전압(km)");
-		labels.push("충전시간()");
-	}
-	
-	var myData=${MyItem.getChartData()}
-	var recommandData=${CompareItem.getChartData()}
 
+	var myData=${MyItemChartData }
+	var recommandData=${CompareItemChartData}
+	
+	var myLabels=${MyItemChartLabel}
+	var recommandLabel=${CompareItemChartLabel}
 	
 	var myData={
-			  labels: labels,
+			  labels: myLabels,
 				  datasets: [{
 				    label: 'Selected item',
 				    data: myData,
@@ -55,7 +70,7 @@ ${MyItem.getChartData()}
 				  }]
 		}
 	var recommandData={
-			  labels: labels,
+			  labels: recommandLabel,
 				  datasets: [{
 					    label: 'Recommanded Item',
 					    data: recommandData,
@@ -69,6 +84,7 @@ ${MyItem.getChartData()}
 					  }]
 		}
 		
+	
 
 	var myConfig = {
 		type: type,
