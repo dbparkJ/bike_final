@@ -222,17 +222,21 @@ function drwaingNaverMarker(data){
       '<p>식당분류 : '+data[i].cate_c+'</p>'+
       '<p>주소 : '+data[i].addr+'</p>'+
       '<p>별점 : '+data[i].naver_star_avg+'</p>'+
+      '<p>분류 : '+data[i].cate_c+'</p>'+
+      
+      //버튼에 data[i] 배열을 담아준다.
       '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"'+
       'data-storename="' + data[i].store_name + '"'+
       'data-addr="'+data[i].addr+'"'+
       'data-naver_star_avg="'+data[i].naver_star_avg+'"'+
       'data-naver_review_num="'+data[i].naver_review_num+'"'+
-      'data-naver_url='+data[i].naver_url+'"'+
-      'data-cate_b='+data[i].cate_b+'"'+
-      'data-cate_c='+data[i].cate_c+'"'+
+      'data-category="'+data[i].cate_c+'"'+
+      'data-naver_url="'+data[i].naver_url+'"'+
+      'data-store_id="'+data[i].store_id+'"'+
       '>' +
-      '가게 상세보기' +
+      '상세보기' +
       '</button>' +
+      
       '</div>';
     var marker = new kakao.maps.Marker({
       map: map,
@@ -243,36 +247,77 @@ function drwaingNaverMarker(data){
       content: content
     });
     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+    kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
+    Markers.push(marker);
+  }
+    openNaverModal();
+}
 
-      $('#exampleModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
+function openNaverModal(){
+		$('#exampleModal').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget);
         var storename = button.data('storename');
         var addr = button.data('addr');
         var naver_review_num = button.data('naver_review_num');
         var naver_star_avg = button.data('naver_star_avg');
         var naver_url = button.data('naver_url');
-        var cate_b = button.data('cate_b');
-        var cate_c = button.data('cate_c');
+        var category = button.data('category');
+        var store_id = button.data('store_id');
         var modal = $(this);
-        /*console.log(data[i].cate_c);*/
-        // 모달 내용에 데이터 삽입
-        modal.find('.modal-body').html(
-          '<p>이름: ' + storename + '</p>' +
-          '<p>이름: ' + naver_review_num + '</p>' +
-          '<p>이름2: ' + addr + '</p>' +
-          '<p>이름3: ' + naver_star_avg + '</p>' +
-          '<p>이름4: ' + naver_url + '</p>' +
-          '<p>이름5: ' + cate_b + '</p>' +
-          '<p>이름6: ' + cate_c + '</p>' 
-        );
+        //타이틀
+        modal.find('.modal-header').html(
+		'<h2 class="modal-title display-6 ms-3" id="exampleModalLabel">'+storename+'</h2>'+
+		'<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+		);
+        modal.find('#store_info').html(
+			'<span class="fs-5">'+category+'</span><br><br>'+
+			'<span class="text-break fs-5">주소</span><br>'+
+			'<span class="text-break fs-6">'+addr+'</span><br><br>'+
+			'<span class="fs-5">리뷰평점 : '+naver_star_avg+'</span><br><br>'+
+			'<span class="fs-5">리뷰 : '+naver_review_num+'개</span>'
+		);
+		
+        //이미지
+        modal.find('#main_img').html(
+			/*'<img src="'+naver_img_url+'" class="figure-img img-thumbnail rounded" alt="...">'*/
+			'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+			'<figcaption class="figure-caption text-end me-1">#키워드1 #키워드2 #키워드3</figcaption>'+
+			'<figcaption class="figure-caption text-end me-1"><a href="'+naver_url+'" target="_blank" rel="noopener noreferrer" class="text-reset">상세보기</a></figcaption>'
+		);
+        getNaverReview(store_id,modal);
+		
       });
-
-
-    kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
-    Markers.push(marker);
-  }
-
 }
+
+function getNaverReview(store_id,modal){
+	$.ajax({
+            type : "GET",
+            url : "../json/naverReivew.jsp?store_id="+store_id,
+            dataType : "JSON",
+            success : function(data){
+				modal.find('#review').empty();
+				for(var i=0; i<data.length; i++){
+					modal.find('#review').append(
+						'<div class="card">'+
+						'<div class="card-header">'+
+							data[i].naver_nickname+
+						'</div>'+
+						'<div class="card-body">'+
+							'<h5 class="card-title"></h5>'+
+							'<p class="card-text text-break">'+data[i].naver_content+'</p>'+
+						'</div>'+
+						'<div class="card-footer text-muted text-end">'+
+							'<span class="me-3"><img src="../static/app/img/star (2).png" width="18" height="20" class="pb-1 me-2">'+data[i].naver_star+'</span> &nbsp;'+
+							'<span>'+data[i].naver_date+'</span>'+
+						'</div>'+
+						'</div>'
+						);
+					}
+				}
+			});
+}
+
+
 
 function drwaingKakaoMarker(data){
    var imageSize = new kakao.maps.Size(30, 30); // 마커 이미지의 이미지 크기 입니다

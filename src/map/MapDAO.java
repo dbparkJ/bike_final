@@ -21,6 +21,7 @@ import map.corseDTO.RepairShop;
 import map.corseDTO.Toilet;
 import map.storeDTO.KakaoStore;
 import map.storeDTO.NaverStore;
+import map.storeDTO.NaverStoreReview;
 import weatherDTO.WeatherRain;
 import weatherDTO.WeatherTemp;
 
@@ -445,5 +446,47 @@ public class MapDAO {
 				} catch (Exception exx) {}
 			}
 			return repairShopList;
+		}
+//----------------------------------------------------------------------------------------------------------------
+		public List<NaverStoreReview> getNaverStoreReview(Integer store_id){
+		    JSONArray naverReviewList = new JSONArray();
+		    try {
+		        con = DBConnection.getInstance().getConnection();
+		        pstmt = con.prepareStatement("select * from naver_store_review where store_id =?");
+		        pstmt.setDouble(1, store_id);
+		        rs=pstmt.executeQuery();
+
+		        while(rs.next()) {
+		            JSONObject obj = new JSONObject();
+		            obj.put("naver_nickname", rs.getString("naver_nickname"));
+		            obj.put("naver_date", rs.getString("naver_date"));
+
+		            String naverContent = rs.getString("naver_content");
+		            if (rs.wasNull()) {
+		                obj.put("naver_content", "정보없음");
+		            } else {
+		                obj.put("naver_content", naverContent);
+		            }
+
+		            Double naverStar = rs.getDouble("naver_star");
+		            if (rs.wasNull()) {
+		                obj.put("naver_star", "별점미제공");
+		            } else {
+		                obj.put("naver_star", naverStar);
+		            }
+		            
+		            naverReviewList.add(obj);
+		        }
+		    } catch(Exception ex){
+		        System.out.println("getNaverStoreReview()예외:"+ex);
+		    } finally {
+		        try {
+		            if(stmt!=null){stmt.close();}
+		            if(rs!=null){rs.close();}
+		            if(pstmt!=null){pstmt.close();}
+		            if(con!=null){con.close();}
+		        } catch (Exception exx) {}
+		    }
+		    return naverReviewList;
 		}
 }//class-end

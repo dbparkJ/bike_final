@@ -6,58 +6,56 @@
 <c:forEach var="RainList" items="${RainList}" varStatus="status">
 	<div class="row sticky-top" style="width:11.5%; height: 100%;">
 		<h5> 주간날씨 </h5>
-		<div class="col-5">
-			<div class="card" style="width: 10rem;">
+		<div class="col">
+			<div class="card" style="width: 9.5rem;">
 				<div class="row">
-					<div class="col">
+					<div class="hstack">
 						<c:choose>
 							<c:when test="${RainList.condition_1_am eq '흐림'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="ms-2" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_am eq '흐리고 비/눈'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="ms-2" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_am eq '구름많고 비/눈'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="ms-2" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_am eq '구름많음'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="ms-2" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_am eq '맑음'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="ms-2" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_am eq '흐리고 비'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="ms-2" style="width:60px; height:60px;">
 							</c:when>
 						</c:choose>
-					</div>
-					<div class="col">
 						<c:choose>
 							<c:when test="${RainList.condition_1_pm eq '흐림'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_pm eq '흐리고 비/눈'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_pm eq '구름많고 비/눈'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_pm eq '구름많음'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_pm eq '맑음'}">
-								<img src="sunny.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="sunny.jpg" class="" style="width:60px; height:60px;">
 							</c:when>
 							<c:when test="${RainList.condition_1_pm eq '흐리고 비'}">
-								<img src="cloudy.jpg" class="card-img-top img-fluid" style="width:60px; height:60px;">
+								<img src="cloudy.jpg" class="" style="width:60px; height:60px;">
 							</c:when>
 						</c:choose>
 					</div>
 				</div>
 				<div class="card-body">
-					<spam class="card-title text-center">${onedaysAfter}</spam><br>
-					<spam class="card-text">최저기온 : ${TempList[status.index].ltemp_1}℃</spam><br>
-					<spam class="card-text">최고기온 : ${TempList[status.index].htemp_1}℃</spam>
+					<span class="card-title text-center">${onedaysAfter}</span><br>
+					<span class="card-text">최저기온 : ${TempList[status.index].ltemp_1}℃</span><br>
+					<span class="card-text">최고기온 : ${TempList[status.index].htemp_1}℃</span>
 				</div>
 			</div>
 			<div class="card" style="width: 10rem;">

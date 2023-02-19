@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import map.MapDAO;
 import map.corseDTO.CorseList;
+import map.storeDTO.NaverStoreReview;
 import weatherDTO.WeatherRain;
 import weatherDTO.WeatherTemp;
 import map.*;
@@ -21,6 +22,7 @@ public class MapAction implements CommandAction{
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		
 		List<CorseList> CorseList = null;
 		List<WeatherRain> RainList = null;
 		List<WeatherTemp> TempList = null;
