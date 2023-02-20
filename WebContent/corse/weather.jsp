@@ -5,9 +5,9 @@
 
 <c:forEach var="RainList" items="${RainList}" varStatus="status">
 	<div class="row sticky-top" style="width:11.5%; height: 100%;">
-		<h5> 주간날씨 </h5>
 		<div class="col">
-			<div class="card" style="width: 9.5rem;">
+		<h5 class="text-center"> 주간날씨 </h5>
+			<div class="card" style="width: 10rem;">
 				<div class="row">
 					<div class="hstack">
 						<c:choose>
@@ -52,10 +52,10 @@
 						</c:choose>
 					</div>
 				</div>
-				<div class="card-body">
-					<span class="card-title text-center">${onedaysAfter}</span><br>
-					<span class="card-text">최저기온 : ${TempList[status.index].ltemp_1}℃</span><br>
-					<span class="card-text">최고기온 : ${TempList[status.index].htemp_1}℃</span>
+				<div class="card-body text-end">
+					<span class="card-text">${TempList[status.index].ltemp_1}℃/${TempList[status.index].htemp_1}℃</span><br>
+					<span>${RainList.rain_1_am}%/${RainList.rain_1_pm}%</span><br>
+					<span class="card-titler">${onedaysAfter}</span><br>
 				</div>
 			</div>
 			<div class="card" style="width: 10rem;">
@@ -105,10 +105,10 @@
 						</c:choose>
 					</div>
 				</div>
-				<div class="card-body">
-					<spam class="card-title text-center">${twodaysAfter}</spam><br>
-					<spam class="card-text">최저기온 : ${TempList[status.index].ltemp_2}℃</spam><br>
-					<spam class="card-text">최고기온 : ${TempList[status.index].htemp_2}℃</spam>
+				<div class="card-body text-end">
+					<span class="card-text">${TempList[status.index].ltemp_2}℃/${TempList[status.index].htemp_2}℃</span><br>
+					<span>${RainList.rain_2_am}%/${RainList.rain_2_pm}%</span><br>
+					<span class="card-titler">${twodaysAfter}</span><br>
 				</div>
 			</div>
 			<div class="card" style="width: 10rem;">

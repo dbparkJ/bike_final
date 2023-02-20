@@ -174,58 +174,23 @@ function removemarkers(){
    Markers=[];
 }
 //------------------------------------------------------------------------------------------------
-/*function drwaingNaverMarker(data){
-	var imageSize = new kakao.maps.Size(30, 30); // 마커 이미지의 이미지 크기 입니다
-	var imageSrc = "../static/app/img/navermarker.png"; 
-	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
-	for(var i=0; i<data.length; i++){
-		var	marker = new kakao.maps.Marker({
-	        map: map, // 마커를 표시할 지도
-	        position: new kakao.maps.LatLng(data[i].lat,data[i].lon), // 마커를 표시할 위치
-	        image : markerImage
-	    	});
-	    var infowindow = new kakao.maps.InfoWindow({
-        	content: '<div class="py-2 mx-2">'+
-        	'<p>'+data[i].store_name+'</p>'+
-        	'<p>식당분류 : '+data[i].cate_c+'</p>'+
-        	'<p>주소 : '+data[i].addr+'</p>'+
-        	'<p>별점 : '+data[i].naver_star_avg+'</p>'+
-        	'<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">'+
-        	'Launch demo modal'+
-        	'</button>'+
-        	'</div>'
-	        });
-	        kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
-	      	$('#exampleModal').on('show.bs.modal', function (event) {
-			  var modal = $(this)
-			  console.log(data[i].store_name)
-			  // 모달 내용에 데이터 삽입
-			  modal.find('.modal-body').html(
-			    '<p>이름: ' + data[i].store_name + '</p>' +
-			    '<p>이메일: ' + data[i].cate_c + '</p>' 
-			  )
-			});
-    		kakao.maps.event.addListener(map, 'click', makeOutListener(infowindow));
-    		Markers.push(marker);
-    		
-	}
-}*/
-
 function drwaingNaverMarker(data){
-  var imageSize = new kakao.maps.Size(30, 30);
-  var imageSrc = "../static/app/img/navermarker.png";
-  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
   for(var i=0; i<data.length; i++){
-    var content = '<div class="py-2 mx-2">'+
-      '<p>'+data[i].store_name+'</p>'+
+	var imageSize = new kakao.maps.Size(40, 40);
+	var imageSrc = "../static/app/img/"+data[i].cate_b+".png";
+	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    var content = '<div class="card py-2 mx-2" style="width: 18rem;">'+
+
+      '<img class="ms-2"src="../static/app/img/'+data[i].cate_b+'.png">'+'<span class="ms-1">'+data[i].store_name+'</span>'+
       '<p>식당분류 : '+data[i].cate_c+'</p>'+
-      '<p>주소 : '+data[i].addr+'</p>'+
+      '<span>주소</span><br>'+
+      '<span>'+data[i].addr+'</span>'+
       '<p>별점 : '+data[i].naver_star_avg+'</p>'+
       '<p>분류 : '+data[i].cate_c+'</p>'+
       
       //버튼에 data[i] 배열을 담아준다.
-      '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"'+
+      '<button type="button" class="btn btn-outline btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal"'+
       'data-storename="' + data[i].store_name + '"'+
       'data-addr="'+data[i].addr+'"'+
       'data-naver_star_avg="'+data[i].naver_star_avg+'"'+
@@ -236,7 +201,6 @@ function drwaingNaverMarker(data){
       '>' +
       '상세보기' +
       '</button>' +
-      
       '</div>';
     var marker = new kakao.maps.Marker({
       map: map,
@@ -285,7 +249,7 @@ function openNaverModal(){
 			'<figcaption class="figure-caption text-end me-1"><a href="'+naver_url+'" target="_blank" rel="noopener noreferrer" class="text-reset">상세보기</a></figcaption>'
 		);
         getNaverReview(store_id,modal);
-		
+		getNaverStoreAIRecommand(store_id,modal);
       });
 }
 
@@ -316,7 +280,59 @@ function getNaverReview(store_id,modal){
 				}
 			});
 }
-
+function getNaverStoreAIRecommand(store_id,modal){
+	modal.find('#aiRecommand').empty();
+	modal.find('#aiRecommand').append(
+		'<div class="spinner-border" role="status">'+
+			'<span class="visually-hidden">Loading...</span>'+
+		'</div>'
+	);
+	$.ajax({
+            type : "GET",
+            url : "../json/naverStoreAIRecommand.jsp?store_id="+store_id,
+            dataType : "JSON",
+            success : function(data){
+				modal.find('#aiRecommand').empty();
+				modal.find('#aiRecommand').append(
+					'<p class="me-3 pb-2 fs-5">'+
+						'AI추천 맛집'+
+					'</p>'+
+					'<div class="row border pt-2">'+
+						'<a class="col" href="'+data[0].naver_url_1+'" target="_blank" rel="noopener noreferrer">'+
+							'<figure class="figure" style="width: 8rem;">'+
+								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+							'<figcaption class="figure-caption ms-1">'+data[0].store_name_1+'</figcaption>'+
+							'</figure>'+
+						'</a>'+
+						'<a class="col" href="'+data[0].naver_url_2+'" target="_blank" rel="noopener noreferrer">'+
+							'<figure class="figure" style="width: 8rem;">'+
+								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+							'<figcaption class="figure-caption ms-1">'+data[0].store_name_2+'</figcaption>'+
+							'</figure>'+
+						'</a>'+
+						'<a class="col" href="'+data[0].naver_url_3+'" target="_blank" rel="noopener noreferrer">'+
+							'<figure class="figure" style="width: 8rem;">'+
+								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+							'<figcaption class="figure-caption ms-1">'+data[0].store_name_3+'</figcaption>'+
+							'</figure>'+
+						'</a>'+
+						'<a class="col" href="'+data[0].naver_url_4+'" target="_blank" rel="noopener noreferrer">'+
+							'<figure class="figure" style="width: 8rem;">'+
+								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+							'<figcaption class="figure-caption ms-1">'+data[0].store_name_4+'</figcaption>'+
+							'</figure>'+
+						'</a>'+
+						'<a class="col" href="'+data[0].naver_url_5+'" target="_blank" rel="noopener noreferrer">'+
+							'<figure class="figure" style="width: 8rem;">'+
+								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+							'<figcaption class="figure-caption ms-1">'+data[0].store_name_5+'</figcaption>'+
+							'</figure>'+
+						'</a>'+
+					'</div>'
+				);
+			}
+			});
+}
 
 
 function drwaingKakaoMarker(data){
