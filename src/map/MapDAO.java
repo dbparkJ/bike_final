@@ -3,6 +3,11 @@
  */
 package map;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +17,11 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import db.DBConnection;
+import item.ItemDAO;
+import item.ItemDTO;
 import map.corseDTO.BikeRealTime;
 import map.corseDTO.CorseList;
 import map.corseDTO.CorseMaxMinLatLon;
@@ -488,5 +496,98 @@ public class MapDAO {
 		        } catch (Exception exx) {}
 		    }
 		    return naverReviewList;
+		}
+//----------------------------------------------------------------------------------------------------------------
+		public NaverStore getSingleNaverStoreInfo(Integer store_id) {
+			NaverStore dto=new NaverStore();
+			 try{
+				 con = DBConnection.getInstance().getConnection();
+				 pstmt = con.prepareStatement("select * from naver_store where store_id="+store_id);
+				 rs=pstmt.executeQuery();
+				 
+				 while(rs.next()){
+					 dto.setStore_id(rs.getInt("store_id"));
+					 dto.setStore_name(rs.getString("store_name"));
+					 dto.setCate_c(rs.getString("cate_c"));
+					 dto.setNaver_url(rs.getString("naver_url"));
+				 } // while-end
+				 
+			 }catch(Exception ex){
+				 System.out.println("getItem() 예외 : "+ex);
+			 }finally{
+				 try{
+					 if(rs != null){rs.close();}
+					 if(stmt != null){stmt.close();}
+					 if(con != null){con.close();}
+					 
+				 }catch(Exception exx){}
+			 } // finally-end
+			return dto;
+		}
+		
+		public List<NaverStore> getNaverStoreAIRecommand(Integer store_id){
+			JSONArray recommandList = new JSONArray();
+			HttpClient client = HttpClient.newHttpClient();
+	        HttpRequest request = HttpRequest.newBuilder()
+	            .uri(URI.create("http://192.168.0.146:5000/recommandNaverStore?store_id="+store_id))
+	            .header("Content-Type", "application/json")
+	            .GET()
+	            .build();
+	        try {
+	            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+	            String responseBody = response.body();
+	            
+	            JSONParser parser = new JSONParser();
+	            JSONObject jsonObject = (JSONObject) parser.parse(responseBody);
+	            
+	            Integer result1 = Integer.parseInt(jsonObject.get("result1").toString());
+	            Integer result2 = Integer.parseInt(jsonObject.get("result2").toString());
+	            Integer result3 = Integer.parseInt(jsonObject.get("result3").toString());
+	            Integer result4 = Integer.parseInt(jsonObject.get("result4").toString());
+	            Integer result5 = Integer.parseInt(jsonObject.get("result5").toString());
+	            
+	            MapDAO mapDAO=MapDAO.getDao(); 
+				NaverStore item_1=mapDAO.getSingleNaverStoreInfo(result1);
+				NaverStore item_2=mapDAO.getSingleNaverStoreInfo(result2);
+				NaverStore item_3=mapDAO.getSingleNaverStoreInfo(result3);
+				NaverStore item_4=mapDAO.getSingleNaverStoreInfo(result4);
+				NaverStore item_5=mapDAO.getSingleNaverStoreInfo(result5);
+				
+				System.out.println(item_1);
+				
+				JSONObject obj = new JSONObject();
+				
+	            obj.put("store_id_1", item_1.getStore_id());
+	            obj.put("store_name_1", item_1.getStore_name());
+	            obj.put("cate_c_1", item_1.getCate_c());
+	            obj.put("naver_url_1", item_1.getNaver_url());
+//	            obj.put("naver_img_url_1", item_1.getNaver_img_url());
+	            obj.put("store_id_2", item_2.getStore_id());
+	            obj.put("store_name_2", item_2.getStore_name());
+	            obj.put("cate_c_2", item_2.getCate_c());
+	            obj.put("naver_url_2", item_2.getNaver_url());
+//	            obj.put("naver_img_url_2", item_2.getNaver_img_url());
+	            obj.put("store_id_3", item_3.getStore_id());
+	            obj.put("store_name_3", item_3.getStore_name());
+	            obj.put("cate_c_3", item_3.getCate_c());
+	            obj.put("naver_url_3", item_3.getNaver_url());
+//	            obj.put("naver_img_url_3", item_3.getNaver_img_url());
+	            obj.put("store_id_4", item_4.getStore_id());
+	            obj.put("store_name_4", item_4.getStore_name());
+	            obj.put("cate_c_4", item_4.getCate_c());
+	            obj.put("naver_url_4", item_4.getNaver_url());
+//	            obj.put("naver_img_url_4", item_4.getNaver_img_url());
+	            obj.put("store_id_5", item_5.getStore_id());
+	            obj.put("store_name_5", item_5.getStore_name());
+	            obj.put("cate_c_5", item_5.getCate_c());
+	            obj.put("naver_url_5", item_5.getNaver_url());
+//	            obj.put("naver_img_url_5", item_5.getNaver_img_url());
+				
+	            recommandList.add(obj);
+				
+	        } catch (Exception e) {
+	            System.out.println("Error: " + e.getMessage());
+	        }
+			return recommandList;
 		}
 }//class-end

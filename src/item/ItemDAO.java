@@ -142,11 +142,8 @@ public class ItemDAO {
 				
 			}catch(Exception ex2){}
 		} // finally-end
-		
 		return cnt; // 총 상품갯수
 	} // getCount()-end
-	
-	
 	public int getSearchCount(String keyword){
 		int cnt=0;
 		
@@ -242,7 +239,7 @@ public class ItemDAO {
 		List<ItemDTO> recommandList = new ArrayList<>();
 		HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://192.168.219.108:5000/recommandItem?item_id="+item_id+"&cosine_weight=3"))
+            .uri(URI.create("http://192.168.0.146:5000/recommandItem?item_id="+item_id))
             .header("Content-Type", "application/json")
             .GET()
             .build();
@@ -278,122 +275,150 @@ public class ItemDAO {
         }
 		return recommandList;
 	}
-	//*
+		/*
+		 * 차트데이터 리스트화
+		 */
+		public List<ItemDTO> getChartDataList(int item_id){ 
+			List<ItemDTO> chartDataList = null;
+			try{
+				con = DBConnection.getInstance().getConnection();	
+				pstmt=con.prepareStatement("select item_category,item_price, item_avg_star, "
+							+ "gear_dan,wheel_inch,weight_kg, motor_output_w,"
+							+ "battery_cap_ah, battery_vol_v, charge_time_h "
+							+ "from new_item_info where item_id=?");
+				pstmt.setInt(1,item_id);
+				rs=pstmt.executeQuery();
+				if(rs.next()){
+					chartDataList=new ArrayList<ItemDTO>();
+					do{	
+						ItemDTO dto=new ItemDTO();
+						
+						 dto.setItem_category(rs.getString("ITEM_CATEGORY"));
+						 dto.setItem_price(rs.getInt("ITEM_PRICE"));
+						 dto.setItem_avg_star(rs.getFloat("ITEM_AVG_STAR"));
+						 dto.setGear_dan(rs.getInt("GEAR_DAN"));
+						 dto.setWheel_inch(rs.getFloat("WHEEL_INCH"));
+						 dto.setWeight_kg(rs.getFloat("WEIGHT_KG"));
+						 dto.setMotor_output_w(rs.getInt("MOTOR_OUTPUT_W"));
+						 dto.setBattery_cap_ah(rs.getFloat("BATTERY_CAP_AH"));
+						 dto.setBattery_vol_v(rs.getFloat("BATTERY_VOL_V"));
+						 dto.setCharge_time_h(rs.getFloat("CHARGE_TIME_H"));
+						 
+						 chartDataList.add(dto); 
+					}while(rs.next());
+				}//if-end
+			}catch(Exception ex){
+				System.out.println("getChartDataList 예외 : "+ex);
+			}finally{
+				try{
+					if(rs!=null){
+						rs.close();
+					}
+					if(pstmt!=null){
+						pstmt.close();
+					}
+					if(con!=null){
+						con.close();
+					}
+					if(stmt!=null) {
+						stmt.close();
+					}
+				}catch(Exception ex2){}
+			}//finally-end
+			return chartDataList;
+		}//getChartList()-end
+		/*
+		 *  전기자전거일 경우 radar chart 에서 쓰일 label 9개를,
+		 *  아닐 경우 radar  chart에서 쓰일 label 5개를 반환해주는 dao 함수
+		 */
+		public List<String> getChartLabel(int item_id){ 
+			List<String> labelList = null;
+			try{
+				con = DBConnection.getInstance().getConnection();	
+				pstmt=con.prepareStatement("select item_category from new_item_info where item_id=?");
+				pstmt.setInt(1,item_id);
+				rs=pstmt.executeQuery();
+				if(rs.next()) {
+					
+					labelList = new ArrayList();
+					
+					labelList.add("'평균별점'");
+					labelList.add("'기어(단)'");
+					labelList.add("'바퀴(inch)'");
+					labelList.add("'무게(kg)'");
+					
+					String myCategory=rs.getString("ITEM_CATEGORY");
+					String electBikeCategory="스포츠/레저>자전거>자전거/MTB>전기자전거";
+					
+					if (myCategory.equals(electBikeCategory)) {
+						
+						labelList.add("'최고속도(km)'");
+						labelList.add("'모터출력(W)'");
+						labelList.add("'배터리용량(AH)'");
+						labelList.add("'배터리전압(v)'");
+						labelList.add("'충전시간(h)'");
+					}//if-end
+				}//if-rs.next()-end
+			}catch(Exception ex){
+				System.out.println("getChartLabel 예외 : "+ex);
+			}finally{
+				try{
+					if(rs!=null){
+						rs.close();
+					}
+					if(pstmt!=null){
+						pstmt.close();
+					}
+					if(con!=null){
+						con.close();
+					}
+					if(stmt!=null) {
+						stmt.close();
+					}
+				}catch(Exception ex2){}
+			}//finally-end
+			return labelList;
+		}//chartDataList()-end
 	
-	
-	/*
-	 * 차트데이터 리스트화
+	/*  
+	 *  전기자전거일 경우 radar chart 에서 쓰일 data 9개를,
+	 *  아닐 경우 radar  chart에서 쓰일 data 5개를 반환해주는 dao 함수
 	 */
-	public List<ItemDTO> getChartDataList(int item_id){ 
-	List<ItemDTO> chartDataList = null;
-	
-	System.out.println("아이디: "+item_id);
-	try{
-		con = DBConnection.getInstance().getConnection();	
-		pstmt=con.prepareStatement("select item_category,item_price, item_avg_star, "
-					+ "gear_dan,wheel_inch,weight_kg, motor_output_w,"
-					+ "battery_cap_ah, battery_vol_v, charge_time_h "
-					+ "from new_item_info where item_id=?");
-		pstmt.setInt(1,item_id);
-		rs=pstmt.executeQuery();
-		if(rs.next()){
-			chartDataList=new ArrayList<ItemDTO>();
-			do{	
-				ItemDTO dto=new ItemDTO();
-				
-				 dto.setItem_category(rs.getString("ITEM_CATEGORY"));
-				 dto.setItem_price(rs.getInt("ITEM_PRICE"));
-				 dto.setItem_avg_star(rs.getFloat("ITEM_AVG_STAR"));
-				 dto.setGear_dan(rs.getInt("GEAR_DAN"));
-				 dto.setWheel_inch(rs.getFloat("WHEEL_INCH"));
-				 dto.setWeight_kg(rs.getFloat("WEIGHT_KG"));
-				 dto.setMotor_output_w(rs.getInt("MOTOR_OUTPUT_W"));
-				 dto.setBattery_cap_ah(rs.getFloat("BATTERY_CAP_AH"));
-				 dto.setBattery_vol_v(rs.getFloat("BATTERY_VOL_V"));
-				 dto.setCharge_time_h(rs.getFloat("CHARGE_TIME_H"));
-				 
-				 chartDataList.add(dto); 
-			}while(rs.next());
-		}//if-end
-	}catch(Exception ex){
-		System.out.println("getChartDataList 예외 : "+ex);
-	}finally{
-		try{
-			if(rs!=null){
-				rs.close();
-			}
-			if(pstmt!=null){
-				pstmt.close();
-			}
-			if(con!=null){
-				con.close();
-			}
-			if(stmt!=null) {
-				stmt.close();
-			}
-		}catch(Exception ex2){}
-	}//finally-end
-	
-	return chartDataList;
-
-	}//getChartList()-end
-	
-	
-	
-	
-	
-	
-	/*
-	 *  읽어보시고 이렇게 구현하는게 구리면 이 함수 지워주세요
-	 *  
-	 * 
-	 *  예지의 변
-	 *  다 dto에 담을 경우 radar 차트 쓸 때 쓸 수치형 데이터를 하나하나 가져와서 다시 리스트에 담는게 번거로워서
-	 *  저는 이렇게 레이더 차트에서 쓸 라벨이랑 데이터를 각각 리스트로 반환하는 걸 만들고 싶었어요 ㅠ
-	 *  
-	 *  내용
-	 *  전기자전거일 경우 radar chart 에서 쓰일 label 9개를,
-	 *  아닐 경우 radar  chart에서 쓰일 label 5개를 반환해주는 dao 함수
-	 *  
-	 *  그리고 진짜진짜루 뻘짓해서 죄송합니다 ㅠㅠ 할일도 많은데... 월요일에 저 주먹으로 패셔도 됩니다(한 대까지 허용)
-	 */
-	public List<String> getChartLabel(int item_id){ 
-		List<String> labelList = null;
-		
-		System.out.println("아이디: "+item_id);
+		public List<Float> getChartData(int item_id){ 
+		List<Float> chartDataList = null;
 		try{
 			con = DBConnection.getInstance().getConnection();	
-			pstmt=con.prepareStatement("select item_category from new_item_info where item_id=?");
+			pstmt=con.prepareStatement("select item_category,item_price, item_avg_star, "
+					+ "gear_dan,wheel_inch,weight_kg,"
+					+ "MAX_SPEED_KM,MILEAGE_KM, motor_output_w,"
+					+ "battery_cap_ah, battery_vol_v, charge_time_h "
+					+ "from new_item_info where item_id=?");
 			pstmt.setInt(1,item_id);
 			rs=pstmt.executeQuery();
+			
 			if(rs.next()) {
+				chartDataList = new ArrayList();
 				
-				labelList = new ArrayList();
-				
-				labelList.add("'가격'");
-				labelList.add("'평균별점'");
-				labelList.add("'기어(단)'");
-				labelList.add("'바퀴(inch)'");
-				labelList.add("'무게(kg)'");
+				chartDataList.add(rs.getFloat("item_avg_star"));
+				chartDataList.add((float)rs.getInt("GEAR_DAN"));
+				chartDataList.add(rs.getFloat("WHEEL_INCH"));
+				chartDataList.add(rs.getFloat("WEIGHT_KG"));
 				
 				String myCategory=rs.getString("ITEM_CATEGORY");
 				String electBikeCategory="스포츠/레저>자전거>자전거/MTB>전기자전거";
-				
+			
+	
 				if (myCategory.equals(electBikeCategory)) {
-					
-					labelList.add("'최고속도(km)'");
-					labelList.add("'주행거리(km)'");
-					labelList.add("'모터출력(W)'");
-					labelList.add("'배터리용량(AH)'");
-					labelList.add("'배터리전압(v)'");
-					labelList.add("'충전시간(h)'");
-					
-					System.out.println(labelList);
+	
+					chartDataList.add((float)rs.getInt("MAX_SPEED_KM"));
+					chartDataList.add((float)rs.getInt("MOTOR_OUTPUT_W")/10);
+					chartDataList.add(rs.getFloat("BATTERY_CAP_AH"));
+					chartDataList.add(rs.getFloat("BATTERY_VOL_V"));
+					chartDataList.add(rs.getFloat("CHARGE_TIME_H"));
 				}//if-end
-				
-			}//if-rs.next()-end
+			}//if-rs.next-end
 		}catch(Exception ex){
-			System.out.println("getChartLabel 예외 : "+ex);
+			System.out.println("getChartData 예외 : "+ex);
 		}finally{
 			try{
 				if(rs!=null){
@@ -410,82 +435,7 @@ public class ItemDAO {
 				}
 			}catch(Exception ex2){}
 		}//finally-end
-		
-		return labelList;
+		return chartDataList;
 	
-		}//chartDataList()-end
-	
-	
-	
-	
-	
-	/*  
-	 *  내용
-	 *  전기자전거일 경우 radar chart 에서 쓰일 data 9개를,
-	 *  아닐 경우 radar  chart에서 쓰일 data 5개를 반환해주는 dao 함수
-	 *  
-	 *  다시 한 번 더.. 죄송합니다
-	 */
-	public List<Float> getChartData(int item_id){ 
-	List<Float> chartDataList = null;
-	
-	System.out.println("아이디: "+item_id);
-	try{
-		con = DBConnection.getInstance().getConnection();	
-		pstmt=con.prepareStatement("select item_category,item_price, item_avg_star, "
-				+ "gear_dan,wheel_inch,weight_kg,"
-				+ "MAX_SPEED_KM,MILEAGE_KM, motor_output_w,"
-				+ "battery_cap_ah, battery_vol_v, charge_time_h "
-				+ "from new_item_info where item_id=?");
-		pstmt.setInt(1,item_id);
-		rs=pstmt.executeQuery();
-		
-		if(rs.next()) {
-			chartDataList = new ArrayList();
-			
-			chartDataList.add((float)rs.getInt("item_price")/10000);
-			chartDataList.add(rs.getFloat("item_avg_star"));
-			chartDataList.add((float)rs.getInt("GEAR_DAN"));
-			chartDataList.add(rs.getFloat("WHEEL_INCH"));
-			chartDataList.add(rs.getFloat("WEIGHT_KG"));
-			
-			String myCategory=rs.getString("ITEM_CATEGORY");
-			String electBikeCategory="스포츠/레저>자전거>자전거/MTB>전기자전거";
-		
-
-			if (myCategory.equals(electBikeCategory)) {
-
-				chartDataList.add((float)rs.getInt("MAX_SPEED_KM"));
-				chartDataList.add((float)rs.getInt("MILEAGE_KM"));
-				chartDataList.add((float)rs.getInt("MOTOR_OUTPUT_W")/10);
-				chartDataList.add(rs.getFloat("BATTERY_CAP_AH"));
-				chartDataList.add(rs.getFloat("BATTERY_VOL_V"));
-				chartDataList.add(rs.getFloat("CHARGE_TIME_H"));
-				
-				System.out.println(chartDataList);
-
-			}//if-end
-		}//if-rs.next-end
-	}catch(Exception ex){
-		System.out.println("getChartData 예외 : "+ex);
-	}finally{
-		try{
-			if(rs!=null){
-				rs.close();
-			}
-			if(pstmt!=null){
-				pstmt.close();
-			}
-			if(con!=null){
-				con.close();
-			}
-			if(stmt!=null) {
-				stmt.close();
-			}
-		}catch(Exception ex2){}
-	}//finally-end
-	
-	return chartDataList;
-
 	}//chartDataList()-end
 }
