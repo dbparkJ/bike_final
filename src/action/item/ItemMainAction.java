@@ -13,7 +13,7 @@ public class ItemMainAction implements CommandAction {
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		request.setCharacterEncoding("utf-8");  // 인코딩안하니깐글씨깨짐
+		  request.setCharacterEncoding("utf-8");  // 인코딩안하니깐글씨깨짐
 	      
 	      String pageNum=request.getParameter("pageNum");
 	      
