@@ -1,6 +1,8 @@
 package item;
 
 import java.net.URI;
+
+
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -240,6 +242,7 @@ public class ItemDAO {
 		HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create("http://192.168.0.146:5000/recommandItem?item_id="+item_id))
+
             .header("Content-Type", "application/json")
             .GET()
             .build();
@@ -275,6 +278,7 @@ public class ItemDAO {
         }
 		return recommandList;
 	}
+
 		/*
 		 * 차트데이터 리스트화
 		 */
@@ -438,4 +442,94 @@ public class ItemDAO {
 		return chartDataList;
 	
 	}//chartDataList()-end
+	
+	//==================================================================================================
+	/*
+	 * 아이템id에 따른 리뷰정보 출력 로직
+	 */
+	public List<Item_reviewDTO> getItemReview(Integer item_id, int start, int cnt){ 
+		List<Item_reviewDTO> list = null;
+		
+		try{
+			con = DBConnection.getInstance().getConnection();
+	
+			pstmt=con.prepareStatement("SELECT * FROM(SELECT ROWNUM AS RNUM, T1.* FROM new_item_review T1 WHERE item_id=?) "
+										+ "where RNUM BETWEEN ? AND ? order by review_date desc");
+			
+			pstmt.setInt(1,item_id);
+			pstmt.setInt(2,start);
+			pstmt.setInt(3,cnt);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				list = new ArrayList<Item_reviewDTO>();
+				
+				do {
+					Item_reviewDTO dto = new Item_reviewDTO();
+
+					dto.setReview_content(rs.getString("review_content"));
+					dto.setReview_star(rs.getInt("review_star"));
+					dto.setReview_nickname(rs.getString("review_nickname"));
+					dto.setReview_date(rs.getString("review_date"));
+					
+					list.add(dto);
+					
+			}while (rs.next());
+		} 
+		}catch(Exception ex){
+			System.out.println("getItemReview 예외 : "+ex);
+		}finally{
+			try{
+				if(rs!=null){
+					rs.close();
+				}
+				if(pstmt!=null){
+					pstmt.close();
+				}
+				if(con!=null){
+					con.close();
+				}
+				if(stmt!=null) {
+					stmt.close();
+				}
+			}catch(Exception ex2){}
+		}//finally-end
+		
+		return list;
+	}//getItemReview()-end
+	
+	/*
+	 * 리뷰갯수, 페이지, 블럭처리에 필요함
+	 */
+	public int getReviewCount(Integer item_id){
+		
+		int cnt=0;
+		
+		try{
+			con = DBConnection.getInstance().getConnection();
+				
+			pstmt=con.prepareStatement("select count(*) from new_item_review where item_id=?"); // 상품갯수조회
+			
+			pstmt.setInt(1,item_id);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				cnt=rs.getInt(1); // 1 필드번호
+			}
+			
+		}catch(Exception ex){
+			System.out.println("getReviewCount()예외 : "+ex);
+		}finally{
+			try{
+				if(rs != null){rs.close();}
+				if(pstmt != null){pstmt.close();}
+				if(con != null){con.close();}
+				
+			}catch(Exception ex2){}
+		} // finally-end
+		
+		return cnt; // 총 리뷰갯수
+		
+	} // getReviewCount()-end
 }

@@ -1,0 +1,16 @@
+#reviewL{border: 1px solid #735e5e;
+		 height: 400px;
+		 overflow: scroll; align-items: center;}
+#header{text-align: left;}
+#middle{text-align: left;}
+#bottom{text-align: right;}
+#star{text-align: left; padding-bottom: 50;}
+#button{width: 200; height: 40; text-align: center;}
+#buttonForm{text-align: right; padding-bottom: 50; padding-top: 10;}
+#content{text-align: left;}
+#delivery{font-size: 16;}
+#name{font-weight: 500; font-size: 28px;}
+#font_size{font-size: 30px; font-weight: 100;}
+#name_font{word-spacing: 2px; font-weight: 60; font-size: 15px;}
+hr{margin: 0px auto;}
+#review_card{width: 95%; padding-left: 60; padding-top: 20;}
