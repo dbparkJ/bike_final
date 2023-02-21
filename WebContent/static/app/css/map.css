@@ -3,7 +3,7 @@
 #mapwrap{position:relative;overflow:hidden;}
 .category, .category *{margin:0;padding:0;color:#000;}   
 .category {position:absolute;overflow:hidden;top:80%;left:68%;width:20%;height:20%;z-index:10;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background:rgba(255, 255, 255, 0.7);}
-/* .navigatebutton {position:absolute;overflow:hidden;top:10%;left:0%;width:20%;height:25%;z-index:10;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background:rgba(255, 255, 255, 0.7);} */
+.btn-group {position:absolute;overflow:hidden;top:10%;left:0%;width:20%;height:25%;z-index:10;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background:rgba(255, 255, 255, 0.7);}
 .card {
     --bs-card-spacer-y: 1rem;
     --bs-card-spacer-x: 1rem;

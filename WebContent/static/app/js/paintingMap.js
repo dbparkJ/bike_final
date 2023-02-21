@@ -263,14 +263,14 @@ function getNaverReview(store_id,modal){
 				for(var i=0; i<data.length; i++){
 					modal.find('#review').append(
 						'<div class="card">'+
-						'<div class="card-header">'+
+						'<div class="card-header shadow-sm">'+
 							data[i].naver_nickname+
 						'</div>'+
-						'<div class="card-body">'+
+						'<div class="card-body shadow-sm">'+
 							'<h5 class="card-title"></h5>'+
 							'<p class="card-text text-break">'+data[i].naver_content+'</p>'+
 						'</div>'+
-						'<div class="card-footer text-muted text-end bg-white border-white">'+
+						'<div class="card-footer text-muted text-end bg-white border-white shadow-sm">'+
 							'<span class="me-3"><img src="../static/app/img/star (2).png" width="18" height="20" class="pb-1 me-2">'+data[i].naver_star+'</span> &nbsp;'+
 							'<span>'+data[i].naver_date+'</span>'+
 						'</div>'+
