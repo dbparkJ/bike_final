@@ -17,7 +17,7 @@ public class OracleTest
         try {
             // SQL 문장을 만들고 만약 문장이 질의어(SELECT문)라면
             // 그 결과를 담을 ResulSet 객체를 준비한 후 실행시킨다.
-            String quary = "SELECT * FROM corse where name = '가오리코스' order by id";
+            String quary = "SELECT * FROM corse";
             
             conn = DBConnection.getInstance().getConnection();
             pstm = conn.prepareStatement(quary);
@@ -25,7 +25,7 @@ public class OracleTest
             
             System.out.println("ID	CORSE	위도	경도	고도");
             System.out.println("============================================");
-            
+            long beforeTime = System.currentTimeMillis(); 
             while(rs.next()){
             	Integer id = rs.getInt(1);
                 String corse = rs.getString(2);
@@ -37,6 +37,9 @@ public class OracleTest
                 String result = id+" "+corse+" "+lon+" "+lat+" "+elev;
                 System.out.println(result);
             }
+            long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+            long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+            System.out.println("시간차이(m) : "+secDiffTime);
             
         } catch (SQLException sqle) {
             System.out.println("SELECT문에서 예외 발생");

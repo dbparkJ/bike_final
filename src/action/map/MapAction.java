@@ -30,7 +30,7 @@ public class MapAction implements CommandAction{
 		MapDAO mapDAO = MapDAO.getDao(); 
 		
 		
-		DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd (E)", Locale.KOREA);
+		DateFormat newFormat = new SimpleDateFormat("yy-MM-dd (E)", Locale.KOREA);
 		Calendar onedaysAfter = Calendar.getInstance();
 		Calendar twodaysAfter = Calendar.getInstance();
 		Calendar threedaysAfter = Calendar.getInstance();

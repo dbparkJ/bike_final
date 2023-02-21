@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -161,6 +162,8 @@ public class MapDAO {
 		// 강수확률 불러오는 리스트
 		public List<WeatherRain> getRainList(){
 			List<WeatherRain> rainList = null;
+			String cloudRainSnow = "흐리고 비/눈";
+			String manyCloudRainSnow = "구름많고 비/눈";
 			try {
 				con = DBConnection.getInstance().getConnection();
 				pstmt = con.prepareStatement("select * from weather_rain where id = (select max(id) from weather_rain)");
@@ -179,18 +182,79 @@ public class MapDAO {
 						dto.setRain_3_pm(rs.getInt("rain_3_pm"));
 						dto.setRain_4_pm(rs.getInt("rain_4_pm"));
 						dto.setRain_5_pm(rs.getInt("rain_5_pm"));
-						dto.setCondition_1_am(rs.getString("condition_1_am"));
-						dto.setCondition_2_am(rs.getString("condition_2_am"));
-						dto.setCondition_3_am(rs.getString("condition_3_am"));
-						dto.setCondition_4_am(rs.getString("condition_4_am"));
-						dto.setCondition_5_am(rs.getString("condition_5_am"));
-						dto.setCondition_1_pm(rs.getString("condition_1_pm"));
-						dto.setCondition_2_pm(rs.getString("condition_2_pm"));
-						dto.setCondition_3_pm(rs.getString("condition_3_pm"));
-						dto.setCondition_4_pm(rs.getString("condition_4_pm"));
-						dto.setCondition_5_pm(rs.getString("condition_5_pm"));
+						
+						if(rs.getString("condition_1_am").equals(cloudRainSnow)) {
+							dto.setCondition_1_am("흐리고 비-눈");
+						}else if(rs.getString("condition_1_am").equals(manyCloudRainSnow)) {
+							dto.setCondition_1_am("구름많고 비-눈");
+						}else {
+							dto.setCondition_1_am(rs.getString("condition_1_am"));
+						}
+						if(rs.getString("condition_2_am").equals(cloudRainSnow)) {
+							dto.setCondition_2_am("흐리고 비-눈");
+						}else if(rs.getString("condition_2_am").equals(manyCloudRainSnow)) {
+							dto.setCondition_2_am("구름많고 비-눈");
+						}else {
+							dto.setCondition_2_am(rs.getString("condition_2_am"));
+						}
+						if(rs.getString("condition_3_am").equals(cloudRainSnow)) {
+							dto.setCondition_3_am("흐리고 비-눈");
+						}else if(rs.getString("condition_3_am").equals(manyCloudRainSnow)) {
+							dto.setCondition_3_am("구름많고 비-눈");
+						}else {
+							dto.setCondition_3_am(rs.getString("condition_3_am"));
+						}
+						if(rs.getString("condition_4_am").equals(cloudRainSnow)) {
+							dto.setCondition_4_am("흐리고 비-눈");
+						}else if(rs.getString("condition_4_am").equals(manyCloudRainSnow)) {
+							dto.setCondition_4_am("구름많고 비-눈");
+						}else {
+							dto.setCondition_4_am(rs.getString("condition_4_am"));
+						}
+						if(rs.getString("condition_5_am").equals(cloudRainSnow)) {
+							dto.setCondition_5_am("흐리고 비-눈");
+						}else if(rs.getString("condition_5_am").equals(manyCloudRainSnow)) {
+							dto.setCondition_5_am("구름많고 비-눈");
+						}else {
+							dto.setCondition_5_am(rs.getString("condition_5_am"));
+						}
+						if(rs.getString("condition_1_pm").equals(cloudRainSnow)) {
+							dto.setCondition_1_pm("흐리고 비-눈");
+						}else if(rs.getString("condition_1_pm").equals(manyCloudRainSnow)) {
+							dto.setCondition_1_pm("구름많고 비-눈");
+						}else {
+							dto.setCondition_1_pm(rs.getString("condition_1_pm"));
+						}
+						if(rs.getString("condition_2_pm").equals(cloudRainSnow)) {
+							dto.setCondition_2_pm("흐리고 비-눈");
+						}else if(rs.getString("condition_2_pm").equals(manyCloudRainSnow)) {
+							dto.setCondition_2_pm("구름많고 비-눈");
+						}else {
+							dto.setCondition_2_pm(rs.getString("condition_2_pm"));
+						}
+						if(rs.getString("condition_3_pm").equals(cloudRainSnow)) {
+							dto.setCondition_3_pm("흐리고 비-눈");
+						}else if(rs.getString("condition_3_pm").equals(manyCloudRainSnow)) {
+							dto.setCondition_3_pm("구름많고 비-눈");
+						}else {
+							dto.setCondition_3_pm(rs.getString("condition_3_pm"));
+						}
+						if(rs.getString("condition_4_pm").equals(cloudRainSnow)) {
+							dto.setCondition_4_pm("흐리고 비-눈");
+						}else if(rs.getString("condition_4_pm").equals(manyCloudRainSnow)) {
+							dto.setCondition_4_pm("구름많고 비-눈");
+						}else {
+							dto.setCondition_4_pm(rs.getString("condition_4_pm"));
+						}
+						if(rs.getString("condition_5_pm").equals(cloudRainSnow)) {
+							dto.setCondition_5_pm("흐리고 비-눈");
+						}else if(rs.getString("condition_5_pm").equals(manyCloudRainSnow)) {
+							dto.setCondition_5_pm("구름많고 비-눈");
+						}else {
+							dto.setCondition_5_pm(rs.getString("condition_5_pm"));
+						}
 						dto.setUpdateTime(rs.getDate("updateTime").toLocalDate());
-						rainList.add(dto); //***
+						rainList.add(dto); 
 					}while(rs.next());
 				}//if-end
 			}catch(Exception ex) {
