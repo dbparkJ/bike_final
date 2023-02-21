@@ -32,7 +32,7 @@ public class ItemDetailAction implements CommandAction {
 		      }
 		      
 		      int currentPage=Integer.parseInt(pageNum);
-		      int pageSize=10;
+		      int pageSize=5;
 		      
 		      int startRow=(currentPage-1)*pageSize+1; // 페이지의 시작 행을 구한다 
 		      int endRow=currentPage*pageSize; // 페이지의 끝행
