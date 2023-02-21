@@ -270,7 +270,7 @@ function getNaverReview(store_id,modal){
 							'<h5 class="card-title"></h5>'+
 							'<p class="card-text text-break">'+data[i].naver_content+'</p>'+
 						'</div>'+
-						'<div class="card-footer text-muted text-end">'+
+						'<div class="card-footer text-muted text-end bg-white border-white">'+
 							'<span class="me-3"><img src="../static/app/img/star (2).png" width="18" height="20" class="pb-1 me-2">'+data[i].naver_star+'</span> &nbsp;'+
 							'<span>'+data[i].naver_date+'</span>'+
 						'</div>'+
@@ -294,10 +294,10 @@ function getNaverStoreAIRecommand(store_id,modal){
             success : function(data){
 				modal.find('#aiRecommand').empty();
 				modal.find('#aiRecommand').append(
-					'<p class="me-3 pb-2 fs-5">'+
+					'<p class="me-3 pb-1 fs-5">'+
 						'AI추천 맛집'+
 					'</p>'+
-					'<div class="row border pt-2">'+
+					'<div class="row border pt-2 me-2">'+
 						'<a class="col" href="'+data[0].naver_url_1+'" target="_blank" rel="noopener noreferrer">'+
 							'<figure class="figure" style="width: 8rem;">'+
 								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+

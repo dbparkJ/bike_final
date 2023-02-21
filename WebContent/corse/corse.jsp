@@ -61,5 +61,5 @@
 	</body>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17d6d1b98aeed31a6b874f4a6fd6d957"></script>    
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js"></script>
+	<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js?version=1"></script>
 </html>
