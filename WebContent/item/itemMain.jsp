@@ -94,16 +94,16 @@
 		</c:if>
 	    <%-- 이전블럭 --%>
 	    <c:if test="${startPage>10}">
-	    	<a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${startPage-10}${keywordParameter}" tabindex="-1" aria-disabled="true">◁</a>
+	    	<a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${startPage-10}${keywordParameter}" tabindex="-1" aria-disabled="true"><span class="text-dark">◁</span></a>
 	    </c:if>
 	    <%-- 페이지처리 --%>
 	    <c:forEach var="i" begin="${startPage}" end="${endPage}">
-	    	<li class="page-item"><a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${i}${keywordParameter}">${i}</a></li>
+	    	<li class="page-item"><a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${i}${keywordParameter}"><span class="text-dark">${i}</span></a></li>
 	    </c:forEach>
 	    <li class="page-item">
 	      <%-- 다음블럭 --%>
 	      <c:if test="${endPage<pageCount}">
-	      <a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${startPage+10}${keywordParameter}">▷</a>
+	      <a class="page-link" href="${ctxpath}/item/itemMain.do?pageNum=${startPage+10}${keywordParameter}"><span class="text-dark">▷</span></a>
 	      </c:if>
 	    </li>
  		</ul>

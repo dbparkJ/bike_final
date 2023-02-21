@@ -35,8 +35,6 @@ public class CompareAction implements CommandAction{
 		MyItemChartData=itemDAO.getChartData(myItemId);
 		CompareItemChartData=itemDAO.getChartData(recommandItemId);
 		
-		System.out.println(myItemId);
-		
 		request.setAttribute("CompareItem", CompareItem);
 		request.setAttribute("MyItem", MyItem);
 		request.setAttribute("CompareItemChartLabel", CompareItemChartLabel);
@@ -45,6 +43,6 @@ public class CompareAction implements CommandAction{
 		request.setAttribute("MyItemChartData", MyItemChartData);
 		
 		
-		return "/item/radar.jsp";
+		return "/item/compare.jsp";
 	}
 }
