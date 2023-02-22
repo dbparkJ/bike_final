@@ -1,7 +1,8 @@
-#top{padding-top: 90; padding-left: 165; padding-bottom: 20;}
+#top{padding-top: 90; padding-bottom: 20;}
 #img{display: inline-block;}
 #menu{font-size: 40px; font-weight: 700; padding-top: 90; padding-left: 165; padding-bottom: 20;
 }
-#hr1{height: 3px; margin: 0px auto; width: 95%;}
+#hr1{margin: 0px auto;}
 #menu-img{padding-top: 100; display: inline-block;}
-#menu-name{padding-left: 60;}
+#menu-name{padding-left: 90;}
+#chartform{padding-left: 180;}
