@@ -32,6 +32,10 @@ function PaintingLine(keyword){
       removemarkers();
       singlecorsename=''
    }
+   
+                  
+       $('#nearInfo').removeClass('d-none');
+       $('#station').removeClass('d-none');
       $.ajax({
       type : "GET",
         url:"../json/corseDatabase_json.jsp?keyword="+keyword,
@@ -89,6 +93,8 @@ function drawingLine(data){
  * 그래프를 그리기
  */
 function creatgraph(data,keyword){
+	$('#chart').css('background-color', 'rgba(255, 255, 255, 0.7)')
+	
    elevList = [];
    if (myLine != undefined){//이미 있으면 myLine 삭제
       myLine.destroy();
@@ -190,13 +196,15 @@ function drwaingNaverMarker(data){
       '<p>분류 : '+data[i].cate_c+'</p>'+
       
       //버튼에 data[i] 배열을 담아준다.
-      '<button type="button" class="btn btn-outline btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal"'+
+      '<button type="button" class="btn btn-outline btn-primary " data-toggle="modal" data-target="#wtf"'+
       'data-storename="' + data[i].store_name + '"'+
       'data-addr="'+data[i].addr+'"'+
       'data-naver_star_avg="'+data[i].naver_star_avg+'"'+
       'data-naver_review_num="'+data[i].naver_review_num+'"'+
       'data-category="'+data[i].cate_c+'"'+
       'data-naver_url="'+data[i].naver_url+'"'+
+      'data-naver_img_url="'+data[i].naver_img_url+'"'+
+      'data-category_b="'+data[i].cate_b+'"'+
       'data-store_id="'+data[i].store_id+'"'+
       '>' +
       '상세보기' +
@@ -218,40 +226,42 @@ function drwaingNaverMarker(data){
 }
 
 function openNaverModal(){
-		$('#exampleModal').on('show.bs.modal', function (event) {
+	
+	$('#wtf').on('show.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
-        var storename = button.data('storename');
-        var addr = button.data('addr');
-        var naver_review_num = button.data('naver_review_num');
-        var naver_star_avg = button.data('naver_star_avg');
-        var naver_url = button.data('naver_url');
-        var category = button.data('category');
-        var store_id = button.data('store_id');
-        var modal = $(this);
-        //타이틀
-        modal.find('.modal-header').html(
+	    var storename = button.data('storename');
+	    var addr = button.data('addr');
+	    var naver_review_num = button.data('naver_review_num');
+	    var naver_star_avg = button.data('naver_star_avg');
+	    var naver_url = button.data('naver_url');
+	    var category = button.data('category');
+	    var store_id = button.data('store_id');
+	    var naver_img_url = button.data('naver_img_url');
+	    var category_b = button.data('category_b');
+	    var modal = $(this);
+	    //타이틀
+	    modal.find('.modal-header').html(
 		'<h2 class="modal-title display-6 ms-3" id="exampleModalLabel">'+storename+'</h2>'+
-		'<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+		'<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>'
 		);
-        modal.find('#store_info').html(
+	    modal.find('#store_info').html(
 			'<span class="fs-5">'+category+'</span><br><br>'+
 			'<span class="text-break fs-5">주소</span><br>'+
 			'<span class="text-break fs-6">'+addr+'</span><br><br>'+
-			'<span class="fs-5">리뷰평점 : '+naver_star_avg+'</span><br><br>'+
-			'<span class="fs-5">리뷰 : '+naver_review_num+'개</span>'
+			'<span class="fs-5">리뷰평점 : '+naver_star_avg+'</span><br><br>'
 		);
 		
-        //이미지
-        modal.find('#main_img').html(
-			/*'<img src="'+naver_img_url+'" class="figure-img img-thumbnail rounded" alt="...">'*/
-			'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
-			'<figcaption class="figure-caption text-end me-1">#키워드1 #키워드2 #키워드3</figcaption>'+
-			'<figcaption class="figure-caption text-end me-1"><a href="'+naver_url+'" target="_blank" rel="noopener noreferrer" class="text-reset">상세보기</a></figcaption>'
+	    //이미지
+	    modal.find('#main_img').html(
+			'<img src="'+naver_img_url+'" class="figure-img img-thumbnail rounded" alt="../static/app/img/'+category_b+'.png" style="width : 300px; height:280px;">'+
+			'<figcaption class="figure-caption text-end me-3">#키워드1 #키워드2 #키워드3</figcaption>'+
+			'<figcaption class="figure-caption text-end me-3"><a href="'+naver_url+'" target="_blank" rel="noopener noreferrer" class="text-reset">상세보기</a></figcaption>'
 		);
-        getNaverReview(store_id,modal);
+	    getNaverReview(store_id,modal);
 		getNaverStoreAIRecommand(store_id,modal);
-      });
+  });
 }
+
 
 function getNaverReview(store_id,modal){
 	$.ajax({
@@ -284,7 +294,7 @@ function getNaverStoreAIRecommand(store_id,modal){
 	modal.find('#aiRecommand').empty();
 	modal.find('#aiRecommand').append(
 		'<div class="spinner-border" role="status">'+
-			'<span class="visually-hidden">Loading...</span>'+
+			'<span class="visually-hidden"></span>'+
 		'</div>'
 	);
 	$.ajax({
@@ -300,31 +310,31 @@ function getNaverStoreAIRecommand(store_id,modal){
 					'<div class="row border pt-2 me-2">'+
 						'<a class="col" href="'+data[0].naver_url_1+'" target="_blank" rel="noopener noreferrer">'+
 							'<figure class="figure" style="width: 8rem;">'+
-								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+								'<img src="'+data[0].naver_img_url_1+'" class="figure-img img-thumbnail rounded" alt="..." style="width:128px; height:128px;">'+
 							'<figcaption class="figure-caption ms-1">'+data[0].store_name_1+'</figcaption>'+
 							'</figure>'+
 						'</a>'+
 						'<a class="col" href="'+data[0].naver_url_2+'" target="_blank" rel="noopener noreferrer">'+
 							'<figure class="figure" style="width: 8rem;">'+
-								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+								'<img src="'+data[0].naver_img_url_2+'" class="figure-img img-thumbnail rounded" alt="..." style="width:128px; height:128px;">'+
 							'<figcaption class="figure-caption ms-1">'+data[0].store_name_2+'</figcaption>'+
 							'</figure>'+
 						'</a>'+
 						'<a class="col" href="'+data[0].naver_url_3+'" target="_blank" rel="noopener noreferrer">'+
 							'<figure class="figure" style="width: 8rem;">'+
-								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+								'<img src="'+data[0].naver_img_url_3+'" class="figure-img img-thumbnail rounded" alt="..." style="width:128px; height:128px;">'+
 							'<figcaption class="figure-caption ms-1">'+data[0].store_name_3+'</figcaption>'+
 							'</figure>'+
 						'</a>'+
 						'<a class="col" href="'+data[0].naver_url_4+'" target="_blank" rel="noopener noreferrer">'+
 							'<figure class="figure" style="width: 8rem;">'+
-								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+								'<img src="'+data[0].naver_img_url_4+'" class="figure-img img-thumbnail rounded" alt="..." style="width:128px; height:128px;">'+
 							'<figcaption class="figure-caption ms-1">'+data[0].store_name_4+'</figcaption>'+
 							'</figure>'+
 						'</a>'+
 						'<a class="col" href="'+data[0].naver_url_5+'" target="_blank" rel="noopener noreferrer">'+
 							'<figure class="figure" style="width: 8rem;">'+
-								'<img src="https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220118_268%2F1642494655979WNKBr_JPEG%2FKakaoTalk_20220117_152141415_07.jpg" class="figure-img img-thumbnail rounded" alt="...">'+
+								'<img src="'+data[0].naver_img_url_5+'" class="figure-img img-thumbnail rounded" alt="..." style="width:128px; height:128px;">'+
 							'<figcaption class="figure-caption ms-1">'+data[0].store_name_5+'</figcaption>'+
 							'</figure>'+
 						'</a>'+

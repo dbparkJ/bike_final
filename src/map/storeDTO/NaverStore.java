@@ -9,6 +9,7 @@ public class NaverStore {
 	private Integer naver_star_avg;
 	private String naver_review_num;
 	private String naver_url;
+	private String naver_img_url;
 	private String cate_b;
 	private String cate_c;
 	public Integer getStore_id() {
@@ -70,5 +71,11 @@ public class NaverStore {
 	}
 	public void setCate_c(String cate_c) {
 		this.cate_c = cate_c;
+	}
+	public String getNaver_img_url() {
+		return naver_img_url;
+	}
+	public void setNaver_img_url(String naver_img_url) {
+		this.naver_img_url = naver_img_url;
 	}
 }

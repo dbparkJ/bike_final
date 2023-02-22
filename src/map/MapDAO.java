@@ -320,7 +320,7 @@ public class MapDAO {
 						+ " test from corse where name=?)"
 						+ "and lon>? and lon<? "
 						+ "and lat>? and lat<? "
-						+ "order by DBMS_RANDOM.RANDOM) where rownum<=50");
+						+ "order by DBMS_RANDOM.RANDOM) where rownum<=50 and naver_img_url is not null");
 				pstmt.setString(1, corseName);
 				pstmt.setDouble(2, minlon);
 				pstmt.setDouble(3, maxlon);
@@ -338,6 +338,11 @@ public class MapDAO {
 					obj.put("naver_star_avg", rs.getInt("naver_star_avg"));
 					obj.put("naver_review_num", rs.getString("naver_review_num"));
 					obj.put("naver_url", rs.getString("naver_url"));
+					if(rs.wasNull()) {
+						obj.put("naver_img_url", "../static/app/img/"+rs.getString("cate_b")+".png");
+					}else {
+						obj.put("naver_img_url", rs.getString("naver_img_url"));
+					}
 					obj.put("cate_b", rs.getString("cate_b"));
 					obj.put("cate_c", rs.getString("cate_c"));
 					
@@ -524,7 +529,7 @@ public class MapDAO {
 		    JSONArray naverReviewList = new JSONArray();
 		    try {
 		        con = DBConnection.getInstance().getConnection();
-		        pstmt = con.prepareStatement("select * from naver_store_review where store_id =?");
+		        pstmt = con.prepareStatement("select * from naver_store_review2 where store_id =?");
 		        pstmt.setDouble(1, store_id);
 		        rs=pstmt.executeQuery();
 
@@ -573,7 +578,9 @@ public class MapDAO {
 					 dto.setStore_id(rs.getInt("store_id"));
 					 dto.setStore_name(rs.getString("store_name"));
 					 dto.setCate_c(rs.getString("cate_c"));
+					 dto.setCate_b(rs.getString("cate_b"));
 					 dto.setNaver_url(rs.getString("naver_url"));
+					 dto.setNaver_img_url(rs.getString("naver_img_url"));
 				 } // while-end
 				 
 			 }catch(Exception ex){
@@ -625,27 +632,53 @@ public class MapDAO {
 	            obj.put("store_name_1", item_1.getStore_name());
 	            obj.put("cate_c_1", item_1.getCate_c());
 	            obj.put("naver_url_1", item_1.getNaver_url());
-//	            obj.put("naver_img_url_1", item_1.getNaver_img_url());
+	            System.out.println(item_1.getNaver_img_url());
+	            if(item_1.getNaver_img_url()==null) {
+	            	obj.put("naver_img_url_1", "../static/app/img/"+item_1.getCate_b()+".png");
+	            }else {
+	            	obj.put("naver_img_url_1", item_1.getNaver_img_url());
+	            	
+	            }
 	            obj.put("store_id_2", item_2.getStore_id());
 	            obj.put("store_name_2", item_2.getStore_name());
 	            obj.put("cate_c_2", item_2.getCate_c());
 	            obj.put("naver_url_2", item_2.getNaver_url());
-//	            obj.put("naver_img_url_2", item_2.getNaver_img_url());
+	            if(item_2.getNaver_img_url()==null) {
+	            	obj.put("naver_img_url_2", "../static/app/img/"+item_2.getCate_b()+".png");
+	            }else {
+	            	obj.put("naver_img_url_2", item_2.getNaver_img_url());
+	            	
+	            }
 	            obj.put("store_id_3", item_3.getStore_id());
 	            obj.put("store_name_3", item_3.getStore_name());
 	            obj.put("cate_c_3", item_3.getCate_c());
 	            obj.put("naver_url_3", item_3.getNaver_url());
-//	            obj.put("naver_img_url_3", item_3.getNaver_img_url());
+	            if(item_3.getNaver_img_url()==null) {
+	            	obj.put("naver_img_url_3", "../static/app/img/"+item_3.getCate_b()+".png");
+	            }else {
+	            	obj.put("naver_img_url_3", item_3.getNaver_img_url());
+	            	
+	            }
 	            obj.put("store_id_4", item_4.getStore_id());
 	            obj.put("store_name_4", item_4.getStore_name());
 	            obj.put("cate_c_4", item_4.getCate_c());
 	            obj.put("naver_url_4", item_4.getNaver_url());
-//	            obj.put("naver_img_url_4", item_4.getNaver_img_url());
+	            if(item_4.getNaver_img_url()==null) {
+	            	obj.put("naver_img_url_4", "../static/app/img/"+item_4.getCate_b()+".png");
+	            }else {
+	            	obj.put("naver_img_url_4", item_4.getNaver_img_url());
+	            	
+	            }
 	            obj.put("store_id_5", item_5.getStore_id());
 	            obj.put("store_name_5", item_5.getStore_name());
 	            obj.put("cate_c_5", item_5.getCate_c());
 	            obj.put("naver_url_5", item_5.getNaver_url());
-//	            obj.put("naver_img_url_5", item_5.getNaver_img_url());
+	            if(item_5.getNaver_img_url()==null) {
+	            	obj.put("naver_img_url_5", "../static/app/img/"+item_5.getCate_b()+".png");
+	            }else {
+	            	obj.put("naver_img_url_5", item_5.getNaver_img_url());
+	            	
+	            }
 				
 	            recommandList.add(obj);
 				
