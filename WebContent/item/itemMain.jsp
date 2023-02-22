@@ -47,32 +47,39 @@
 					<%-- 상품이 있을때 --%>
 					<c:if test="${count>0 && '' ne keyword2}">
 						<c:forEach var="items" items="${itemlist}">
-							<a href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}" class="items">
+							<a href="${ctxpath}/item/itemDetail.do?item_id=${items.item_id}" class="items" style="text-decoration: none;">
 								<div class="col">
 									<div class="card h-100">
-										<img src="${items.item_img}" class="card-img border" alt="...">
-										<div class="card-header bg-white border-white">
-											<%-- 배송비가없다면 --%>
+										<img src="${items.item_img}" class="card-img border">
+<%-- 										<div class="card-header bg-white border-white">
+											배송비가없다면
 											<c:if test = "${items.item_delivery_fee==0}">
-												<span class="text-muted fw-bold" id="font_size">무료배송</span><br>
+												<span class="text-muted font-weight-bold" id="font_size">무료배송</span><br>
 											</c:if>
 											<c:if test = "${items.item_delivery_fee!=0}">
-												<span class="text-muted fw-bold" id="font_size"> </span><br>
+												<span class="text-muted font-weight-bold" id="font_size"> </span><br>
 											</c:if>
-										</div>
+										</div> --%>
 										<div class="card-body">
+											<%-- 배송비가없다면 --%>
+											<c:if test = "${items.item_delivery_fee==0}">
+												<span class="text-muted font-weight-bold" id="font_size">무료배송</span><br>
+											</c:if>
+											<c:if test = "${items.item_delivery_fee!=0}">
+												<span class="text-muted font-weight-bold" id="font_size"> </span><br>
+											</c:if>
 											<div class="pb-auto">
-												<span class="card-text fs-8" id="item_name_font">${items.item_name}</span><br>
+												<span class="card-text fs-8" id="item_name_font" style="color: black">${items.item_name}</span><br>
 											</div>
 										</div>
-											<div class="card-footer bg-white border-white">
-												<div class="d-flex flex-row-reverse">
-													<span class="card-text fs-4 fw-bold"><fmt:formatNumber value="${items.item_price}" type="number"/>원</span><br>
-												</div>
-												<div class="d-flex flex-row-reverse">
-													<span class="text-muted"><img src ="star (2).png" width="15" height="15"> ${items.item_avg_star}/5</span>
-												</div>
-										 	</div>
+										<div class="card-footer bg-white border-white">
+											<div class="d-flex flex-row-reverse">
+												<span class="card-text h4 font-weight-bold"><fmt:formatNumber value="${items.item_price}" type="number"/>원</span><br>
+											</div>
+											<div class="d-flex flex-row-reverse">
+												<span class="text-muted"><img src ="star (2).png" width="15" height="15"> ${items.item_avg_star}/5</span>
+											</div>
+									 	</div>
 									</div>
 								</div>
 							</a>

@@ -17,27 +17,23 @@
 <div class="card bg-white border-white">
 	<div align="center" id="top">
 		<div id="img" class="card bg-white border-white">
+		  <p class="font-weight-bold h4">${MyItem.item_name}</p><br>
 		  <a href="${MyItem.url}">
 		  <img src="${MyItem.getItem_img()}" width="550" height="550">
 		  </a>
-		  <div class="card-body">
-		    <p class="font-weight-bold h4">${MyItem.item_name}</p>
-		  </div>
 		</div>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<div id="img" class="card bg-white border-white">
+		  <p class="font-weight-bold h4">${CompareItem.item_name}</p><br>
 		  <a href="${CompareItem.url}">
 		  <img src="${CompareItem.getItem_img()}" width="550" height="550">
 		  </a>
-		  <div class="card-body">
-		    <p class="font-weight-bold h4">${CompareItem.item_name}</p>
-		  </div>
 		</div>
 	</div>
 	
 	<div id="menu">
 		<span id="menu-name">상품비교하기</span>
-		<hr id="hr1" style="height: 15px; width: 80%;">
+		<hr id="hr1" sty>
 		<div align="center">
 			<div id="menu-img" class="card border-white bg-white">
 			  <div>
@@ -172,9 +168,8 @@
 
    var myConfig = {
       type: type,
-      data: myData,
-      
-      options: {};
+      data: myData
+  
    };
    
    var recommandConfig = {
