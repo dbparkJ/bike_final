@@ -130,7 +130,7 @@
        <%-- 리뷰 --%>
        <div class="pt-6 pb-3" id="star">
        <div id= "review_form">
-          <span class="fs-6" id="font_size">리뷰수<span class="fs-3 fw-bold">(${itemDTO.item_num})</span>&nbsp;&nbsp;사용자 총 평점 <span class="fs-3 fw-bold">${itemDTO.item_avg_star} / 5</span></span>
+          <span>리뷰수</span><span id="font_size">(${itemDTO.item_num})</span>&nbsp;&nbsp;<span id="font_size">사용자 총 평점</span><span class="fs-6 fw-bold">${itemDTO.item_avg_star} / 5</span>
        </div>
        <div id="review_card">
           <c:forEach var="review" items="${reviewList}">

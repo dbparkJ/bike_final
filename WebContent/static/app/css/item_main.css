@@ -11,7 +11,10 @@ a:hover {
 		color : black;
 	}
 	
+a{text-decoration-line: none;}
+	
 #font_size{
+	
 	font-size: 13;
 	}
 
