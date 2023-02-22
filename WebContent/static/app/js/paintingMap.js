@@ -188,7 +188,7 @@ function drwaingNaverMarker(data){
 	var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
     var content = '<div class="card py-2 mx-2" style="width: 18rem;">'+
 
-      '<img class="ms-2"src="../static/app/img/'+data[i].cate_b+'.png">'+'<span class="ms-1">'+data[i].store_name+'</span>'+
+      '<img class="ms-2"src="../static/app/img/'+data[i].cate_b+'.png" style="width:256px; height:256px;">'+'<span class="ms-1">'+data[i].store_name+'</span>'+
       '<p>식당분류 : '+data[i].cate_c+'</p>'+
       '<span>주소</span><br>'+
       '<span>'+data[i].addr+'</span>'+

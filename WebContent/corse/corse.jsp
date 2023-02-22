@@ -10,7 +10,7 @@
 	<body>
 	<%-- 	<jsp:include page="/module/modal.jsp"/> --%>
 		<div class="border" style="width: 100%; height: 100%;">
-			<div class="justify-content-between d-flex" style="height: 93%;">
+			<div class="justify-content-between d-flex" style="height: 95%;">
 				<div class="border"id="map" style="width:88%; height: 100%;">
 				<div style="position:absolute; z-index:3; left:0">
 				<div class="btn-group">
@@ -78,6 +78,6 @@
 </div>
 			<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17d6d1b98aeed31a6b874f4a6fd6d957"></script>    
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-		<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js?ver=12"></script>
+		<script type="text/javascript" src="${ctxpath}/static/app/js/paintingMap.js?ver=2"></script>
 	</body>
 </html>

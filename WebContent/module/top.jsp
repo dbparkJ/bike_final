@@ -17,9 +17,6 @@
 			<li class="nav-item">
 				<a class="nav-link mx-2" href="${ctxpath}/item/itemMain.do">자전거 상품</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link mx-2" href="#">따릉이 수요예측</a>
-			</li>
 		</ul>
 	</div>
   </div>
