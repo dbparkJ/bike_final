@@ -29,6 +29,7 @@ import map.corseDTO.CorseMaxMinLatLon;
 import map.corseDTO.RepairShop;
 import map.corseDTO.Toilet;
 import map.storeDTO.KakaoStore;
+import map.storeDTO.KakaoStoreReview;
 import map.storeDTO.NaverStore;
 import map.storeDTO.NaverStoreReview;
 import weatherDTO.WeatherRain;
@@ -371,7 +372,7 @@ public class MapDAO {
 						+ " test from corse where name=?)"
 						+ "and lon>? and lon<? "
 						+ "and lat>? and lat<? "
-						+ "order by DBMS_RANDOM.RANDOM) where rownum<=50");
+						+ "order by DBMS_RANDOM.RANDOM) where rownum<=50 and kakao_img_url is not null");
 				pstmt.setString(1, corseName);
 				pstmt.setDouble(2, minlon);
 				pstmt.setDouble(3, maxlon);
@@ -389,6 +390,11 @@ public class MapDAO {
 					obj.put("kakao_star_avg", rs.getInt("kakao_star_avg"));
 					obj.put("kakao_review_num", rs.getString("kakao_review_num"));
 					obj.put("kakao_url", rs.getString("kakao_url"));
+					if(rs.getString("kakao_img_url").equals("사진없음")) {
+						obj.put("kakao_img_url", "../static/app/img/"+rs.getString("cate_b")+".png");
+					}else {
+						obj.put("kakao_img_url", rs.getString("kakao_img_url"));
+					}
 					obj.put("cate_b", rs.getString("cate_b"));
 					obj.put("cate_c", rs.getString("cate_c"));
 					
@@ -529,7 +535,7 @@ public class MapDAO {
 		    JSONArray naverReviewList = new JSONArray();
 		    try {
 		        con = DBConnection.getInstance().getConnection();
-		        pstmt = con.prepareStatement("select * from naver_store_review2 where store_id =?");
+		        pstmt = con.prepareStatement("select * from naver_store_review where store_id =?");
 		        pstmt.setDouble(1, store_id);
 		        rs=pstmt.executeQuery();
 
@@ -539,14 +545,14 @@ public class MapDAO {
 		            obj.put("naver_date", rs.getString("naver_date"));
 
 		            String naverContent = rs.getString("naver_content");
-		            if (rs.wasNull()) {
+		            if (naverContent==null) {
 		                obj.put("naver_content", "정보없음");
 		            } else {
 		                obj.put("naver_content", naverContent);
 		            }
 
 		            Double naverStar = rs.getDouble("naver_star");
-		            if (rs.wasNull()) {
+		            if (naverStar==null) {
 		                obj.put("naver_star", "별점미제공");
 		            } else {
 		                obj.put("naver_star", naverStar);
@@ -565,6 +571,54 @@ public class MapDAO {
 		        } catch (Exception exx) {}
 		    }
 		    return naverReviewList;
+		}
+		public List<KakaoStoreReview> getKakaoStoreReview(Integer store_id){
+			JSONArray kakaoReviewList = new JSONArray();
+			try {
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from kakao_store_review where store_id =?");
+				pstmt.setDouble(1, store_id);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					JSONObject obj = new JSONObject();
+					
+					String kakaoNickname = rs.getString("kakao_nickname");
+					System.out.println(kakaoNickname);
+					if (kakaoNickname==null) {
+						obj.put("kakao_nickname", "정보없음");
+					}else {
+						obj.put("kakao_nickname", kakaoNickname);
+					}
+					obj.put("kakao_date", rs.getString("kakao_date"));
+					
+					String kakaoContent = rs.getString("kakao_content");
+					if (rs.getString("kakao_content")==null) {
+						obj.put("kakao_content", "정보없음");
+					} else {
+						obj.put("kakao_content", kakaoContent);
+					}
+					
+					Double kakaoStar = rs.getDouble("kakao_star");
+					if (rs.getString("kakao_star")==null) {
+						obj.put("kakao_star", "별점미제공");
+					} else {
+						obj.put("kakao_star", kakaoStar);
+					}
+					
+					kakaoReviewList.add(obj);
+				}
+			} catch(Exception ex){
+				System.out.println("getKakaoStoreReview()예외:"+ex);
+			} finally {
+				try {
+					if(stmt!=null){stmt.close();}
+					if(rs!=null){rs.close();}
+					if(pstmt!=null){pstmt.close();}
+					if(con!=null){con.close();}
+				} catch (Exception exx) {}
+			}
+			return kakaoReviewList;
 		}
 //----------------------------------------------------------------------------------------------------------------
 		public NaverStore getSingleNaverStoreInfo(Integer store_id) {
@@ -593,6 +647,34 @@ public class MapDAO {
 					 
 				 }catch(Exception exx){}
 			 } // finally-end
+			return dto;
+		}
+		public KakaoStore getSingleKakaoStoreInfo(Integer store_id) {
+			KakaoStore dto=new KakaoStore();
+			try{
+				con = DBConnection.getInstance().getConnection();
+				pstmt = con.prepareStatement("select * from kakao_store where store_id="+store_id);
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()){
+					dto.setStore_id(rs.getInt("store_id"));
+					dto.setStore_name(rs.getString("store_name"));
+					dto.setCate_c(rs.getString("cate_c"));
+					dto.setCate_b(rs.getString("cate_b"));
+					dto.setKakao_url(rs.getString("kakao_url"));
+					dto.setKakao_img_url(rs.getString("kakao_img_url"));
+				} // while-end
+				
+			}catch(Exception ex){
+				System.out.println("getSingleKakaoStoreInfo() 예외 : "+ex);
+			}finally{
+				try{
+					if(rs != null){rs.close();}
+					if(stmt != null){stmt.close();}
+					if(con != null){con.close();}
+					
+				}catch(Exception exx){}
+			} // finally-end
 			return dto;
 		}
 		
@@ -685,6 +767,94 @@ public class MapDAO {
 	        } catch (Exception e) {
 	            System.out.println("Error: " + e.getMessage());
 	        }
+			return recommandList;
+		}
+		public List<KakaoStore> getKakaoStoreAIRecommand(Integer store_id){
+			JSONArray recommandList = new JSONArray();
+			HttpClient client = HttpClient.newHttpClient();
+			HttpRequest request = HttpRequest.newBuilder()
+					.uri(URI.create("http://192.168.0.146:5000/recommandKakaoStore?store_id="+store_id))
+					.header("Content-Type", "application/json")
+					.GET()
+					.build();
+			try {
+				HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+				String responseBody = response.body();
+				
+				JSONParser parser = new JSONParser();
+				JSONObject jsonObject = (JSONObject) parser.parse(responseBody);
+				
+				Integer result1 = Integer.parseInt(jsonObject.get("result1").toString());
+				Integer result2 = Integer.parseInt(jsonObject.get("result2").toString());
+				Integer result3 = Integer.parseInt(jsonObject.get("result3").toString());
+				Integer result4 = Integer.parseInt(jsonObject.get("result4").toString());
+				Integer result5 = Integer.parseInt(jsonObject.get("result5").toString());
+				
+				MapDAO mapDAO=MapDAO.getDao(); 
+				KakaoStore item_1=mapDAO.getSingleKakaoStoreInfo(result1);
+				KakaoStore item_2=mapDAO.getSingleKakaoStoreInfo(result2);
+				KakaoStore item_3=mapDAO.getSingleKakaoStoreInfo(result3);
+				KakaoStore item_4=mapDAO.getSingleKakaoStoreInfo(result4);
+				KakaoStore item_5=mapDAO.getSingleKakaoStoreInfo(result5);
+				JSONObject obj = new JSONObject();
+				
+				obj.put("store_id_1", item_1.getStore_id());
+				obj.put("store_name_1", item_1.getStore_name());
+				obj.put("cate_c_1", item_1.getCate_c());
+				obj.put("kakao_url_1", item_1.getKakao_url());
+				if(item_1.getKakao_img_url().equals("사진없음")) {
+					obj.put("kakao_img_url_1", "../static/app/img/"+item_1.getCate_b()+".png");
+				}else {
+					obj.put("kakao_img_url_1", item_1.getKakao_img_url());
+					
+				}
+				obj.put("store_id_2", item_2.getStore_id());
+				obj.put("store_name_2", item_2.getStore_name());
+				obj.put("cate_c_2", item_2.getCate_c());
+				obj.put("kakao_url_2", item_2.getKakao_url());
+				if(item_2.getKakao_img_url().equals("사진없음")) {
+					obj.put("kakao_img_url_2", "../static/app/img/"+item_2.getCate_b()+".png");
+				}else {
+					obj.put("kakao_img_url_2", item_2.getKakao_img_url());
+					
+				}
+				obj.put("store_id_3", item_3.getStore_id());
+				obj.put("store_name_3", item_3.getStore_name());
+				obj.put("cate_c_3", item_3.getCate_c());
+				obj.put("kakao_url_3", item_3.getKakao_url());
+				if(item_3.getKakao_img_url().equals("사진없음")) {
+					obj.put("kakao_img_url_3", "../static/app/img/"+item_3.getCate_b()+".png");
+				}else {
+					obj.put("kakao_img_url_3", item_3.getKakao_img_url());
+					
+				}
+				obj.put("store_id_4", item_4.getStore_id());
+				obj.put("store_name_4", item_4.getStore_name());
+				obj.put("cate_c_4", item_4.getCate_c());
+				obj.put("kakao_url_4", item_4.getKakao_url());
+				if(item_4.getKakao_img_url().equals("사진없음")) {
+					obj.put("kakao_img_url_4", "../static/app/img/"+item_4.getCate_b()+".png");
+				}else {
+					obj.put("kakao_img_url_4", item_4.getKakao_img_url());
+					
+				}
+				obj.put("store_id_5", item_5.getStore_id());
+				obj.put("store_name_5", item_5.getStore_name());
+				obj.put("cate_c_5", item_5.getCate_c());
+				obj.put("kakao_url_5", item_5.getKakao_url());
+				if(item_5.getKakao_url().equals("사진없음")) {
+					obj.put("kakao_img_url_5", "../static/app/img/"+item_5.getCate_b()+".png");
+					System.out.println("hi");
+				}else {
+					obj.put("kakao_img_url_5", item_5.getKakao_img_url());
+					
+				}
+				
+				recommandList.add(obj);
+				
+			} catch (Exception e) {
+				System.out.println("Error: " + e.getMessage());
+			}
 			return recommandList;
 		}
 }//class-end

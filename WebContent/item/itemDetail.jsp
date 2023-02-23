@@ -3,18 +3,16 @@
    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
 <html>
 
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="..\static\app\js\itemRecommand.js"></script>
-<link rel="stylesheet" href="../static/app/css/item_detail.css">
-
+	<script src="..\static\app\js\itemRecommand.js"></script>
+	<link rel="stylesheet" href="../static/app/css/item_detail.css">
 </head>
 <body>
-<div class="container-md pt-4">
+<div class="justify-content-between d-flex" style="height: 0%;">
+<div class="container pt-3">
    <div>
       <%-- 기존상품정보,리뷰 --%>
       <div class="card text-center bg-white">
@@ -196,22 +194,22 @@
   </div>
  </div>
 </div>
-
+</div>
 <!-- ai상품비교 -->
-<div class="row">
+<div class="row sticky-top ml-5 pt-5" style="padding:50px">
+<div class="col">
    <c:forEach var="recommandItem" items="${recommandItemList}">
-         <div class="col">
-             <div class="card">
-              <img src="${recommandItem.item_img}" class="card-img-top" alt="...">
+             <div class="card" style="width: 10rem;">
+              <img src="${recommandItem.item_img}" class="card-img-top ml-3" alt="..." style="width:120px; height:120px;">
               <div class="card-body">
-                <p class="card-title" id="name_font">${recommandItem.item_name}</p>
+                <p class="card-title text-truncate" id="name_font">${recommandItem.item_name}</p>
                 <p class="card-text fs-6 fw-bold"><fmt:formatNumber value="${recommandItem.item_price}" type="number"/>원</p>
                 <p class="card-text fs-6"><img src="../static/app/img/star (2).png" width="18" height="20" class="pb-1 me-2">${recommandItem.item_avg_star}/5</p>
                 <a href="${ctxpath}/item/compare.do?myItemId=${itemDTO.item_id}&recommandItemId=${recommandItem.item_id}" class="btn btn-dark" >AI 비교하기</a>
              </div>
           </div>
-      </div>
    </c:forEach>
- </div>
+</div>
+</div>
 </body>
 </html>
