@@ -1,5 +1,5 @@
-<%@page import="map.storeDTO.NaverStoreReview"%>
 <%@page import="map.storeDTO.KakaoStoreReview"%>
+<%@page import="map.storeDTO.NaverStoreReview"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="map.*"
@@ -10,8 +10,8 @@
 
 <%
 Integer store_id = Integer.parseInt(request.getParameter("store_id"));
-List<NaverStoreReview> naverReviewList= null;
+List<KakaoStoreReview> kakaoReviewList= null;
 MapDAO dao = MapDAO.getDao();
-naverReviewList = dao.getNaverStoreReview(store_id);
+kakaoReviewList = dao.getKakaoStoreReview(store_id);
 %>
-<%=naverReviewList%>
+<%=kakaoReviewList%>

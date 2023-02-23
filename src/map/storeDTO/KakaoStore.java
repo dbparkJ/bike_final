@@ -9,6 +9,7 @@ public class KakaoStore {
 	private Integer kakao_star_avg;
 	private String kakao_review_num;
 	private String kakao_url;
+	private String kakao_img_url;
 	private String cate_b;
 	private String cate_c;
 	public Integer getStore_id() {
@@ -71,4 +72,11 @@ public class KakaoStore {
 	public void setCate_c(String cate_c) {
 		this.cate_c = cate_c;
 	}
+	public String getKakao_img_url() {
+		return kakao_img_url;
+	}
+	public void setKakao_img_url(String kakao_img_url) {
+		this.kakao_img_url = kakao_img_url;
+	}
+	
 }

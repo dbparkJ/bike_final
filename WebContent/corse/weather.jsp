@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="hstack gap-2 ml-1">
 						<img src="../static/app/img/weather/${RainList.condition_1_am}.png" class="mx-4" style="width:32px; height:32px;">
-						<img src="../static/app/img/weather/${RainList.condition_1_pm}.png" class="mr-2" style="width:32px; height:32px;">
+						<img src="../static/app/img/weather/${RainList.condition_1_pm}.png" class="mr-5" style="width:32px; height:32px;">
 					</div>
 				</div>
 				<div class="card-body ml-1">
