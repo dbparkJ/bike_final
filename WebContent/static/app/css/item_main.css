@@ -3,18 +3,18 @@
 		}
 		
 a:hover {
- 			color : black;
+ 			color : rgb(255, 255, 255);
+ 			text-decoration-line: none;
 	}
+	
 
-.items {
+.items{
 		text-decoration-line: none;
-		color : black;
-	}
+	} 
 	
 a{text-decoration-line: none;}
 	
 #font_size{
-	
 	font-size: 13;
 	}
 

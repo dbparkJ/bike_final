@@ -19,16 +19,16 @@
       <%-- 기존상품정보,리뷰 --%>
       <div class="card text-center bg-white">
         <div class="card-body">
-           <div class="px-5">
-            <img src="${itemDTO.item_img}" class="img-thumbnail me-5" alt="..." width="500" height="550" align="left">
-         </div>
+           <div id="img-title">
+            <img src="${itemDTO.item_img}" class="img-thumbnail" width="500" height="550" align="left">
+           </div>
       
           <div id="title_form" class="card-text bg-white border-white pt-2">
              <c:if test = "${itemDTO.item_delivery_fee==0}">
-               <span id="delivery" class="text-muted fw-bold">무료배송</span><br>
+               <span id="delivery" class="text-muted font-weight-bold">무료배송</span><br>
             </c:if>
             <c:if test = "${itemDTO.item_delivery_fee!=0}">
-               <span class="text-muted fw-bold"> </span><br>
+               <span class="text-muted"> </span><br>
             </c:if>
              <span id="name">${itemDTO.item_name}</span>
           </div>
@@ -120,7 +120,7 @@
           </div>
           
           <div id="buttonForm" class=" card-footer bg-white border-white">
-             <span class="card-text fs-4 fw-bold"><fmt:formatNumber value="${itemDTO.item_price}" type="number"/>원</span><br>
+             <span class="card-text h3 font-weight-bold"><fmt:formatNumber value="${itemDTO.item_price}" type="number"/>원</span><br>
              <div class="pt-2">
                 <a href="${itemDTO.url}" class="btn btn-dark" id="button" target="_blank" rel="noopener noreferrer">구매하러가기</a>
              </div>
@@ -130,7 +130,8 @@
        <%-- 리뷰 --%>
        <div class="pt-6 pb-3" id="star">
        <div id= "review_form">
-          <span>리뷰수</span><span id="font_size">(${itemDTO.item_num})</span>&nbsp;&nbsp;<span id="font_size">사용자 총 평점</span><span class="fs-6 fw-bold">${itemDTO.item_avg_star} / 5</span>
+          <span class="h5">리뷰수</span><span class="font-weight-bold" id="font_size">(${itemDTO.item_num})</span>&nbsp;&nbsp;
+          <span class="h5">사용자 총 평점 </span><span class="font-weight-bold" id="font_size">${itemDTO.item_avg_star} / 5</span>
        </div>
        <div id="review_card">
           <c:forEach var="review" items="${reviewList}">
