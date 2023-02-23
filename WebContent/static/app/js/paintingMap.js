@@ -425,7 +425,7 @@ function naverStoreList(singlecorsename,latlon_AVG){
             dataType : "JSON",
             success : function(data){
                drwaingNaverMarker(data)
-            }
+            }//1
       })
    }   
 }
