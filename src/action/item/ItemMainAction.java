@@ -13,7 +13,7 @@ public class ItemMainAction implements CommandAction {
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		  request.setCharacterEncoding("utf-8");  // 인코딩안하니깐글씨깨짐
+		  request.setCharacterEncoding("utf-8"); 
 	      
 	      String pageNum=request.getParameter("pageNum");
 	      
@@ -75,7 +75,6 @@ public class ItemMainAction implements CommandAction {
 
 		request.setAttribute("keyword2", keyword2);
 		request.setAttribute("keywordParameter", keywordParameter);
-//		request.setAttribute("category", category);
 
 		request.setAttribute("itemlist",itemlist);
 		return "/item/itemMain.jsp";

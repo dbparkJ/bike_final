@@ -7,7 +7,9 @@ import java.util.*;
 import item.*;
 import command.CommandAction;
 
-
+/*
+ * 상품 비교 action 페이지
+ */
 public class CompareAction implements CommandAction{
 	
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {

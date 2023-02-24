@@ -1,5 +1,8 @@
 package action.item;
 
+/*
+ * 상품상세보기 페이지
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

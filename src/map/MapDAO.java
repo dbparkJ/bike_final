@@ -311,7 +311,11 @@ public class MapDAO {
 					return tempList;
 				}//getRainList-end
 //----------------------------------------------------------------------------------------------------------------
-		public List<NaverStore> getNaverStoreList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
+			/*
+			 * 	코스의 이름과 미니멈 위경도, 맥시멈 위경도의 정보를 인자로 받아
+			 * 코스 근처의 맛집 정보 50개를 랜덤하게 생성하는 로직
+			 */
+			public List<NaverStore> getNaverStoreList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
 			JSONArray naverStoreList = new JSONArray();
 			try {
 				con = DBConnection.getInstance().getConnection();
@@ -414,7 +418,9 @@ public class MapDAO {
 		}
 		
 //----------------------------------------------------------------------------------------------------------------
-		
+		/*
+		 * 코스의 이름 미니멈,맥시멈 위경도를 받아 코스 근처의 화장실,수리점,따릉이 실시간  정보를 나타내는 로직
+		 */
 		public List<Toilet> getToiletList(String corseName,Double minlon,Double maxlon,Double minlat,Double maxlat){
 			JSONArray toiletList = new JSONArray();
 			try {
@@ -531,6 +537,9 @@ public class MapDAO {
 			return repairShopList;
 		}
 //----------------------------------------------------------------------------------------------------------------
+		/*
+		 * 상점의 id값을 받아 상점 리뷰를 제공하는 로직
+		 */
 		public List<NaverStoreReview> getNaverStoreReview(Integer store_id){
 		    JSONArray naverReviewList = new JSONArray();
 		    try {
@@ -621,6 +630,9 @@ public class MapDAO {
 			return kakaoReviewList;
 		}
 //----------------------------------------------------------------------------------------------------------------
+		/*
+		 * 상점의 id를 받아 그 상점의 데이터를 보여주는 로직
+		 */
 		public NaverStore getSingleNaverStoreInfo(Integer store_id) {
 			NaverStore dto=new NaverStore();
 			 try{
@@ -677,7 +689,14 @@ public class MapDAO {
 			} // finally-end
 			return dto;
 		}
-		
+//----------------------------------------------------------------------------------------------------------------		
+		/*
+		 * 상점의 id값을 인자로 플라스크와 통신하여 플라스크의 리턴을 받아
+		 * getSingleNaverStoreInfo를 통하여 상점 정보를 가져오는 로직
+		 * 이때 front의 icon정보를 상점의 카테고리로 반환해 주어 c:if 대신 
+		 * 파일명을 가지고 img를 불러와주기 때문에 db에서 받아온 cate_b의 값을 넣어주어 
+		 * 보다 적은 코드를 사용하기 위해 이곳에서 데이터 값을 바꿔준다.
+		 */
 		public List<NaverStore> getNaverStoreAIRecommand(Integer store_id){
 			JSONArray recommandList = new JSONArray();
 			HttpClient client = HttpClient.newHttpClient();

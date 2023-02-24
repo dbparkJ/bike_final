@@ -20,6 +20,10 @@ public class DBConnection{
         Connection con = null;
         try {
         	Class.forName("oracle.jdbc.driver.OracleDriver");        
+//        	String user = "지정한 userid"; 
+//        	String pw = "db password";
+//        	String url = "jdbc:oracle:thin:@db이름?TNS_USER name = 지갑 경로";
+//        	
             String user = "admin"; 
             String pw = "Ejwhgdmsvmfhwprxm1";
             String url = "jdbc:oracle:thin:@FinalProject_medium?TNS_ADMIN=D:/Wallet_FinalProject";
